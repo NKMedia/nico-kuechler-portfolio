@@ -1,10 +1,10 @@
 # GitHub Copilot Instructions
 
-This file provides workspace-specific custom instructions for GitHub Copilot when working with the Maria Nielsen Portfolio project.
+This file provides workspace-specific custom instructions for GitHub Copilot when working with the Nico Küchler Portfolio project.
 
 ## Project Overview
 
-This is a React-based portfolio website for Maria Nielsen, a Project Manager. The project uses modern React patterns, Vite for building, and includes responsive design with dark/light theme support.
+This is a React-based portfolio website for Nico Küchler, a Senior Software Developer & Media Designer. The project uses modern React patterns, Vite for building, and includes responsive design with dark/light theme support.
 
 ## Code Style Guidelines
 

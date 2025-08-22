@@ -1,4 +1,5 @@
 import React from "react";
+import { useNavigate } from "react-router-dom";
 import ProfileCard from "./ProfileCard";
 
 /**
@@ -11,11 +12,10 @@ import ProfileCard from "./ProfileCard";
  * - Responsive layout for different screen sizes
  *
  * @returns {JSX.Element} About page component
- *
- * @todo Connect navigation buttons to actual routing
- * @todo Replace placeholder text with real content
  */
 function About() {
+  const navigate = useNavigate();
+
   return (
     <div className="content">
       <ProfileCard />
@@ -23,17 +23,26 @@ function About() {
         <h1>Hallo</h1>
         <h3>Wer ich bin &amp; was ich mache</h3>
         <div className="profile-buttons">
-          <button className="btn-blue">LEBENSLAUF</button>
-          <button className="btn-outline">PROJEKTE</button>
+          <button className="btn-blue" onClick={() => navigate("/lebenslauf")}>
+            LEBENSLAUF
+          </button>
+          <button className="btn-outline" onClick={() => navigate("/projekte")}>
+            PROJEKTE
+          </button>
         </div>
         <p className="profile-desc">
-          Ich bin ein Textabschnitt. Klicken Sie hier, um einen Text
-          hinzuzufügen und mich zu bearbeiten. Klicken Sie auf „Text bearbeiten"
-          oder doppelklicken Sie, um loszulegen.
+          Ich bin Nico Küchler, Senior Software Developer und Media Designer mit
+          über 10 Jahren Erfahrung in der Entwicklung innovativer digitaler
+          Lösungen. Seit 2022 arbeite ich am Flughafen München, wo ich komplexe
+          Softwareprojekte für die Luftfahrtbranche entwickle.
           <br />
           <br />
-          Dies ist der ideale Ort, um einen langen Text über Ihr Unternehmen zu
-          schreiben.
+          Meine Leidenschaft liegt in der Verbindung von technischer Exzellenz
+          und kreativem Design. Von React-Webanwendungen über VR/AR-Projekte bis
+          hin zu 3D-Konfiguratoren - ich bringe Ihre digitalen Visionen zum
+          Leben. Als selbstständiger Mediendesigner und zertifizierter
+          Unity-Entwickler biete ich maßgeschneiderte Lösungen für Unternehmen
+          jeder Größe.
         </p>
       </div>
     </div>

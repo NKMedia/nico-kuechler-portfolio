@@ -1,4 +1,4 @@
-# Contributing to Maria Nielsen Portfolio
+# Contributing to Nico Küchler Portfolio
 
 Thank you for your interest in contributing to this portfolio project! This document provides guidelines and information for contributors.
 

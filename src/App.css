@@ -34,6 +34,10 @@ body {
   z-index: 10;
   width: 100%;
   box-sizing: border-box;
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.08);
+  border-bottom: 1px solid rgba(37, 99, 235, 0.1);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
 }
 .header-right {
   display: flex;
@@ -116,8 +120,12 @@ body {
   top: 100%;
   left: 0;
   right: 0;
-  background: #fff;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 0 0 16px 16px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
   z-index: 100;
 }
 
@@ -153,9 +161,9 @@ body {
   max-width: 1400px;
 }
 .profile-card {
-  background: #fff;
+  background: rgba(255, 255, 255, 0.9);
   box-shadow: 0 8px 32px rgba(0, 0, 0, 0.12);
-  border-radius: 8px;
+  border-radius: 12px;
   padding: 40px 40px 32px 40px;
   width: 280px;
   display: flex;
@@ -165,6 +173,9 @@ body {
   z-index: 5;
   margin-top: 0;
   flex-shrink: 0;
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
 }
 .profile-info {
   display: flex;
@@ -239,34 +250,50 @@ body {
   margin-bottom: 24px;
 }
 .btn-blue {
-  background: #2563eb;
+  background: linear-gradient(
+    135deg,
+    rgba(37, 99, 235, 0.9),
+    rgba(29, 78, 216, 0.9)
+  );
   color: #fff;
-  border: none;
+  border: 1px solid rgba(255, 255, 255, 0.2);
   border-radius: 24px;
   padding: 8px 24px;
   font-size: 1rem;
   font-weight: 600;
   cursor: pointer;
-  box-shadow: 0 2px 8px rgba(37, 99, 235, 0.08);
-  transition: background 0.2s;
+  box-shadow: 0 4px 16px rgba(37, 99, 235, 0.3);
+  transition: all 0.3s ease;
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
 }
 .btn-blue:hover {
-  background: #1746a0;
+  background: linear-gradient(
+    135deg,
+    rgba(29, 78, 216, 0.95),
+    rgba(37, 99, 235, 0.95)
+  );
+  box-shadow: 0 6px 20px rgba(37, 99, 235, 0.4);
+  transform: translateY(-2px);
 }
 .btn-outline {
-  background: #fff;
+  background: rgba(255, 255, 255, 0.1);
   color: #222;
-  border: 1px solid #222;
+  border: 1px solid rgba(34, 34, 34, 0.3);
   border-radius: 24px;
   padding: 8px 24px;
   font-size: 1rem;
   font-weight: 600;
   cursor: pointer;
-  transition: border 0.2s, color 0.2s;
+  transition: all 0.3s ease;
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
 }
 .btn-outline:hover {
-  border-color: #2563eb;
+  background: rgba(37, 99, 235, 0.1);
+  border-color: rgba(37, 99, 235, 0.5);
   color: #2563eb;
+  transform: translateY(-2px);
 }
 .profile-desc {
   font-size: 1.05rem;
@@ -281,12 +308,14 @@ body {
   justify-content: space-between;
   align-items: flex-end;
   padding: 40px;
-  background: #fff;
+  background: rgba(255, 255, 255, 0.95);
   font-size: 0.9rem;
-  border-top: 1px solid #f0f0f0;
+  border-top: 1px solid rgba(240, 240, 240, 0.5);
   width: 100%;
   box-sizing: border-box;
   margin-top: auto;
+  backdrop-filter: blur(15px);
+  -webkit-backdrop-filter: blur(15px);
 }
 .footer-left {
   display: flex;
@@ -405,10 +434,21 @@ body {
 }
 
 .project-card {
-  background: #f8f9fa;
-  border-radius: 8px;
+  background: rgba(248, 249, 250, 0.8);
+  border-radius: 12px;
   padding: 1.5rem;
+  backdrop-filter: blur(15px);
+  -webkit-backdrop-filter: blur(15px);
+  border: 1px solid rgba(255, 255, 255, 0.3);
   border-left: 4px solid #2563eb;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
+  transition: all 0.3s ease;
+}
+
+.project-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.15);
+  background: rgba(248, 249, 250, 0.9);
 }
 
 .project-card h4 {
@@ -452,6 +492,45 @@ body {
   font-size: 1.2rem;
 }
 
+/* Status Message Styles */
+.status-message {
+  padding: 1rem;
+  border-radius: 8px;
+  margin-bottom: 1.5rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-weight: 500;
+  animation: slideIn 0.3s ease-in-out;
+}
+
+.status-message.success {
+  background: rgba(34, 197, 94, 0.1);
+  color: #16a34a;
+  border: 1px solid rgba(34, 197, 94, 0.2);
+}
+
+.status-message.error {
+  background: rgba(239, 68, 68, 0.1);
+  color: #dc2626;
+  border: 1px solid rgba(239, 68, 68, 0.2);
+}
+
+.status-message i {
+  font-size: 1.1rem;
+}
+
+@keyframes slideIn {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
 .form-group {
   margin-bottom: 1rem;
 }
@@ -467,18 +546,24 @@ body {
 .form-group textarea {
   width: 100%;
   padding: 0.75rem;
-  border: 1px solid #ddd;
-  border-radius: 4px;
+  border: 1px solid rgba(221, 221, 221, 0.5);
+  border-radius: 8px;
   font-size: 1rem;
   box-sizing: border-box;
-  background: #fff !important;
+  background: rgba(255, 255, 255, 0.8) !important;
   color: #222 !important;
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  transition: all 0.3s ease;
 }
 
 .form-group input:focus,
 .form-group textarea:focus {
   outline: none;
-  border-color: #2563eb;
+  border-color: rgba(37, 99, 235, 0.6);
+  background: rgba(255, 255, 255, 0.95) !important;
+  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+  transform: translateY(-1px);
 }
 
 /* Responsive Design */
@@ -953,8 +1038,8 @@ body {
 
 /* Theme Toggle */
 .theme-toggle {
-  background: none;
-  border: 2px solid #2563eb;
+  background: rgba(255, 255, 255, 0.2);
+  border: 2px solid rgba(37, 99, 235, 0.3);
   border-radius: 50%;
   width: 40px;
   height: 40px;
@@ -964,11 +1049,15 @@ body {
   cursor: pointer;
   color: #2563eb;
   transition: all 0.3s ease;
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
 }
 
 .theme-toggle:hover {
-  background: #2563eb;
+  background: rgba(37, 99, 235, 0.9);
   color: #fff;
+  transform: scale(1.05);
+  box-shadow: 0 4px 12px rgba(37, 99, 235, 0.3);
 }
 
 /* Dark Theme */
@@ -983,12 +1072,14 @@ body.dark-theme .main-bg {
 
 body.dark-theme .header {
   background: #1a1a1a;
-  border-bottom: 1px solid #333;
+  border-bottom: 1px solid rgba(37, 99, 235, 0.2);
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.25);
 }
 
 body.dark-theme .profile-card {
-  background: #2d2d2d;
+  background: rgba(45, 45, 45, 0.9);
   color: #e0e0e0;
+  border: 1px solid rgba(255, 255, 255, 0.1);
 }
 
 body.dark-theme .profile-main h1,
@@ -997,13 +1088,19 @@ body.dark-theme .profile-main h3 {
 }
 
 body.dark-theme .footer {
-  background: #1a1a1a;
-  border-top: 1px solid #333;
+  background: rgba(26, 26, 26, 0.95);
+  border-top: 1px solid rgba(51, 51, 51, 0.5);
 }
 
 body.dark-theme .project-card {
-  background: #2d2d2d;
+  background: rgba(45, 45, 45, 0.8);
   color: #e0e0e0;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-left: 4px solid #2563eb;
+}
+
+body.dark-theme .project-card:hover {
+  background: rgba(45, 45, 45, 0.95);
 }
 
 body.dark-theme .profile-card .profile-info {
@@ -1097,8 +1194,12 @@ body.dark-theme .hamburger span {
 }
 
 body.dark-theme .mobile-nav {
-  background: #1a1a1a;
-  border-top: 1px solid #333;
+  background: rgba(26, 26, 26, 0.95);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 0 0 16px 16px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
 }
 
 body.dark-theme .mobile-nav a {
@@ -1131,16 +1232,29 @@ body.dark-theme .role {
 
 body.dark-theme .form-group input,
 body.dark-theme .form-group textarea {
-  background: #fff !important;
-  border-color: #ddd !important;
-  color: #222 !important;
+  background: rgba(45, 45, 45, 0.8) !important;
+  border-color: rgba(221, 221, 221, 0.2) !important;
+  color: #e0e0e0 !important;
 }
 
 body.dark-theme .form-group input:focus,
 body.dark-theme .form-group textarea:focus {
-  border-color: #2563eb !important;
-  background: #fff !important;
-  color: #222 !important;
+  border-color: rgba(37, 99, 235, 0.7) !important;
+  background: rgba(45, 45, 45, 0.95) !important;
+  color: #e0e0e0 !important;
+}
+
+/* Dark Theme Status Messages */
+body.dark-theme .status-message.success {
+  background: rgba(34, 197, 94, 0.15);
+  color: #4ade80;
+  border: 1px solid rgba(34, 197, 94, 0.3);
+}
+
+body.dark-theme .status-message.error {
+  background: rgba(239, 68, 68, 0.15);
+  color: #f87171;
+  border: 1px solid rgba(239, 68, 68, 0.3);
 }
 
 /* Smooth Transitions */

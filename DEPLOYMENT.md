@@ -1,6 +1,6 @@
 # Deployment Guide
 
-This guide covers various deployment options for the Maria Nielsen Portfolio website.
+This guide covers various deployment options for the Nico Küchler Portfolio website.
 
 ## 📋 Table of Contents
 
@@ -174,8 +174,8 @@ Create `.env` files for different environments:
 **.env.production:**
 
 ```env
-VITE_API_URL=https://api.marianielsenportfolio.com
-VITE_CONTACT_EMAIL=maria@example.com
+VITE_API_URL=https://api.nicokuechlerportfolio.com
+VITE_CONTACT_EMAIL=nico@example.com
 VITE_ANALYTICS_ID=GA_MEASUREMENT_ID
 ```
 

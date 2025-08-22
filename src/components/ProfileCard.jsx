@@ -1,64 +1,55 @@
 import React from "react";
+import nicoPhoto from "../assets/nico_kuechler.jpg";
 
 /**
- * ProfileCard component displaying personal information and social media links
+ * ProfileCard component displaying personal information and contact links
  *
  * Features:
  * - Profile image with alt text for accessibility
  * - Personal information (name, role)
- * - Social media links with proper accessibility labels
+ * - Contact links (email, phone, professional networks)
  * - Responsive design for different screen sizes
  *
  * @returns {JSX.Element} Profile card component
- *
- * @todo Replace placeholder image with actual profile photo
- * @todo Update social media links with real URLs
- * @todo Consider making profile data configurable via props
  */
 function ProfileCard() {
   return (
     <div className="profile-card">
       <div className="profile-info">
-        <img
-          src="https://randomuser.me/api/portraits/women/44.jpg"
-          alt="Maria Nielsen"
-          className="profile-img"
-        />
-        <h2>Maria Nielsen</h2>
-        <div className="profile-role">PROJEKTMANAGERIN</div>
+        <img src={nicoPhoto} alt="Nico Küchler" className="profile-img" />
+        <h2>Nico Küchler</h2>
+        <div className="profile-role">
+          SENIOR SOFTWARE DEVELOPER & MEDIA DESIGNER
+        </div>
         <hr className="profile-hr" />
         <div className="profile-socials">
           <a
-            href="https://facebook.com"
-            target="_blank"
-            rel="noopener noreferrer"
-            aria-label="Facebook"
+            href="mailto:mail@nico-kuechler.de"
+            aria-label="E-Mail"
+            title="E-Mail senden"
           >
-            <i className="fab fa-facebook-f" />
+            <i className="fas fa-envelope" />
+          </a>
+          <a href="tel:+491718168164" aria-label="Telefon" title="Anrufen">
+            <i className="fas fa-phone" />
           </a>
           <a
-            href="https://twitter.com"
-            target="_blank"
-            rel="noopener noreferrer"
-            aria-label="Twitter"
-          >
-            <i className="fab fa-twitter" />
-          </a>
-          <a
-            href="https://linkedin.com"
+            href="https://www.linkedin.com/in/nico-kuechler-9337a762/"
             target="_blank"
             rel="noopener noreferrer"
             aria-label="LinkedIn"
+            title="LinkedIn Profil"
           >
             <i className="fab fa-linkedin-in" />
           </a>
           <a
-            href="https://instagram.com"
+            href="https://github.com/levoram"
             target="_blank"
             rel="noopener noreferrer"
-            aria-label="Instagram"
+            aria-label="GitHub"
+            title="GitHub Profil"
           >
-            <i className="fab fa-instagram" />
+            <i className="fab fa-github" />
           </a>
         </div>
       </div>

@@ -7,74 +7,103 @@ function Projekte() {
       <ProfileCard />
       <div className="profile-main">
         <h1>Projekte</h1>
-        <h3>Meine erfolgreichen Projekte</h3>
+        <h3>Ausgewählte Arbeiten & Entwicklungen</h3>
 
         <div className="project-grid">
           <div className="project-card">
-            <h4>E-Commerce Platform</h4>
+            <h4>Flughafen München - Softwarelösungen</h4>
             <p>
-              <strong>Zeitraum:</strong> 2023 - 2024
+              <strong>Zeitraum:</strong> 2017 - heute
             </p>
             <p>
-              <strong>Team:</strong> 12 Entwickler, 3 Designer
+              <strong>Technologien:</strong> React, Node.js, TypeScript, Figma
             </p>
             <p>
-              <strong>Technologien:</strong> React, Node.js, MongoDB
-            </p>
-            <p>
-              Entwicklung einer skalierbaren E-Commerce-Plattform für ein
-              mittelständisches Unternehmen mit über 50.000 Produkten.
-            </p>
-          </div>
-
-          <div className="project-card">
-            <h4>Mobile Banking App</h4>
-            <p>
-              <strong>Zeitraum:</strong> 2022 - 2023
-            </p>
-            <p>
-              <strong>Team:</strong> 8 Entwickler, 2 UX Designer
-            </p>
-            <p>
-              <strong>Technologien:</strong> React Native, Firebase
-            </p>
-            <p>
-              Projektleitung für die Entwicklung einer sicheren Banking-App mit
-              biometrischer Authentifizierung.
+              Konzeption und Entwicklung individueller Softwarelösungen für FMG,
+              Tochtergesellschaften und Lufthansa. Schwerpunkt auf
+              Webentwicklung, UI/UX Design und Einführung moderner
+              Frontend-Tools.
             </p>
           </div>
 
           <div className="project-card">
-            <h4>CRM System</h4>
+            <h4>VR/AR Mixed Reality Projekte</h4>
             <p>
-              <strong>Zeitraum:</strong> 2021 - 2022
+              <strong>Zeitraum:</strong> 2012 - heute
             </p>
             <p>
-              <strong>Team:</strong> 6 Entwickler
+              <strong>Technologien:</strong> Unity, C#, VR/AR SDKs
             </p>
             <p>
-              <strong>Technologien:</strong> Vue.js, Laravel, MySQL
-            </p>
-            <p>
-              Implementation eines maßgeschneiderten CRM-Systems zur Optimierung
-              der Kundenbeziehungen.
+              Entwicklung immersiver VR- und AR-Anwendungen für verschiedene
+              Branchen. Von industriellen Trainingssimulatoren bis hin zu
+              interaktiven Präsentationslösungen - Unity-zertifizierte
+              Entwicklung.
             </p>
           </div>
 
           <div className="project-card">
-            <h4>IoT Dashboard</h4>
+            <h4>3D Navigation Prototyp</h4>
             <p>
-              <strong>Zeitraum:</strong> 2020 - 2021
+              <strong>Zeitraum:</strong> 2014 - 2016
             </p>
             <p>
-              <strong>Team:</strong> 5 Entwickler, 1 Data Scientist
+              <strong>Unternehmen:</strong> InfoGate Information Systems
             </p>
             <p>
-              <strong>Technologien:</strong> Angular, Python, InfluxDB
+              <strong>Technologien:</strong> Unity, 3D Modeling, UI/UX Design
             </p>
             <p>
-              Entwicklung eines Real-time Dashboards zur Überwachung von
-              IoT-Geräten in der Industrie.
+              Entwicklung eines innovativen 3D-Navigationssystems für
+              interaktive Informationssysteme. Kombination aus technischer
+              Entwicklung und visueller Gestaltung.
+            </p>
+          </div>
+
+          <div className="project-card">
+            <h4>Nico Küchler Mediendesign</h4>
+            <p>
+              <strong>Zeitraum:</strong> 2012 - heute
+            </p>
+            <p>
+              <strong>Services:</strong> Game Design, Videoproduktion,
+              Fotografie
+            </p>
+            <p>
+              Selbstständige Tätigkeit mit Fokus auf 3D-Konfiguratoren, Game
+              Design, professionelle Videoproduktion und Fotografie.
+              Vollständige Projektbetreuung von der Konzeption bis zur
+              Umsetzung.
+            </p>
+          </div>
+
+          <div className="project-card">
+            <h4>Digitalisierung Fachbibliotheken</h4>
+            <p>
+              <strong>Zeitraum:</strong> 2005 - 2006
+            </p>
+            <p>
+              <strong>Organisation:</strong> NATO E3-A Verband
+            </p>
+            <p>
+              Projektleitung für die Digitalisierung militärischer
+              Fachbibliotheken. Frühe Erfahrungen in der digitalen
+              Transformation und Informationssystem-Management.
+            </p>
+          </div>
+
+          <div className="project-card">
+            <h4>Web- & Grafikdesign Projekte</h4>
+            <p>
+              <strong>Zeitraum:</strong> 2014 - heute
+            </p>
+            <p>
+              <strong>Tools:</strong> Adobe Creative Cloud, CAD, Video Editing
+            </p>
+            <p>
+              Vielfältige Projekte im Bereich Produktrenderings, CAD-Pläne,
+              Werbevideos und Grafikdesign. Umfassende Expertise in der
+              visuellen Kommunikation und Markenentwicklung.
             </p>
           </div>
         </div>

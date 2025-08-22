@@ -30,8 +30,10 @@ function Header() {
     <header className="header">
       <div className="header-left">
         <span className="dot" />
-        <span className="name">Maria Nielsen</span>
-        <span className="role">/ PROJEKTMANAGERIN</span>
+        <span className="name">Nico Küchler</span>
+        <span className="role">
+          / SENIOR SOFTWARE DEVELOPER & MEDIA DESIGNER
+        </span>
       </div>
       <div className="header-right">
         <nav className="header-nav">

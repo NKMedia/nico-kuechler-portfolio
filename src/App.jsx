@@ -9,6 +9,8 @@ const About = lazy(() => import("./components/About"));
 const Lebenslauf = lazy(() => import("./components/Lebenslauf"));
 const Projekte = lazy(() => import("./components/Projekte"));
 const Kontakt = lazy(() => import("./components/Kontakt"));
+const Impressum = lazy(() => import("./components/Impressum"));
+const Datenschutz = lazy(() => import("./components/Datenschutz"));
 
 /**
  * Loading component displayed while lazy-loaded components are being fetched
@@ -53,6 +55,8 @@ function App() {
             <Route path="/lebenslauf" element={<Lebenslauf />} />
             <Route path="/projekte" element={<Projekte />} />
             <Route path="/kontakt" element={<Kontakt />} />
+            <Route path="/impressum" element={<Impressum />} />
+            <Route path="/datenschutz" element={<Datenschutz />} />
           </Routes>
         </Suspense>
         <Footer />

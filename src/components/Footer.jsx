@@ -1,66 +1,64 @@
 import React from "react";
+import { Link } from "react-router-dom";
 
+/**
+ * Footer component with legal links and contact information
+ *
+ * @returns {JSX.Element} Footer component
+ */
 function Footer() {
   return (
     <footer className="footer">
       <div className="footer-left">
-        <button type="button" className="footer-link">
+        <Link to="/impressum" className="footer-link">
           Impressum
-        </button>
-        <button type="button" className="footer-link">
+        </Link>
+        <Link to="/datenschutz" className="footer-link">
           Datenschutz
-        </button>
-        <button type="button" className="footer-link">
-          AGB
-        </button>
-        <div className="footer-copyright">© 2035 Nico Küchler.</div>
+        </Link>
+        <div className="footer-copyright">
+          © 2025 Nico Küchler Mediendesign.
+        </div>
       </div>
       <div className="footer-right">
         <div className="footer-contact">
           <div>
             <b>Telefon</b>
             <br />
-            +49 (0) 456 7890
+            +49 (0)171 8168164
           </div>
           <div>
             <b>E-Mail</b>
             <br />
-            info@website.com
+            mail@nico-kuechler.de
           </div>
           <div>
             <b>Socials</b>
             <br />
             <a
-              href="https://facebook.com"
-              target="_blank"
-              rel="noopener noreferrer"
-              aria-label="Facebook"
+              href="mailto:mail@nico-kuechler.de"
+              aria-label="E-Mail"
+              title="E-Mail senden"
             >
-              <i className="fab fa-facebook-f" />
+              <i className="fas fa-envelope" />
             </a>
             <a
-              href="https://twitter.com"
-              target="_blank"
-              rel="noopener noreferrer"
-              aria-label="Twitter"
-            >
-              <i className="fab fa-twitter" />
-            </a>
-            <a
-              href="https://linkedin.com"
+              href="https://www.linkedin.com/in/nico-kuechler-9337a762/"
               target="_blank"
               rel="noopener noreferrer"
               aria-label="LinkedIn"
+              title="LinkedIn Profil"
             >
               <i className="fab fa-linkedin-in" />
             </a>
             <a
-              href="https://instagram.com"
+              href="https://github.com/levoram"
               target="_blank"
               rel="noopener noreferrer"
-              aria-label="Instagram"
+              aria-label="GitHub"
+              title="GitHub Profil"
             >
-              <i className="fab fa-instagram" />
+              <i className="fab fa-github" />
             </a>
           </div>
         </div>

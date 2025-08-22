@@ -1,6 +1,6 @@
-# Maria Nielsen - Portfolio Website
+# Nico Küchler - Portfolio Website
 
-A modern, responsive portfolio website built with React and Vite, showcasing the professional profile of Maria Nielsen, Project Manager.
+A modern, responsive portfolio website built with React and Vite, showcasing the professional profile of Nico Küchler, Senior Software Developer & Media Designer.
 
 ## 🚀 Features
 
@@ -147,9 +147,9 @@ This project is licensed under the MIT License - see the LICENSE file for detail
 
 ## 👤 Author
 
-**Maria Nielsen**
+**Nico Küchler**
 
-- Role: Project Manager
+- Role: Senior Software Developer & Media Designer BA
 - Portfolio: [Your Portfolio URL]
 - LinkedIn: [Your LinkedIn Profile]
 - Email: [Your Email]
