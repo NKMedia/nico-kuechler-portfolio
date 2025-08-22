@@ -3,6 +3,15 @@
  * Centralized place for reusable helper functions
  */
 
+import type {
+  ContactFormData,
+  ValidationResult,
+  MailtoParams,
+  ElementDimensions,
+  ScrollOptions,
+  DeviceType,
+  SupportedFeature,
+} from "../types";
 import { FORM_CONFIG, ERROR_MESSAGES } from "../constants";
 
 /**
@@ -14,19 +23,25 @@ export const validation = {
    * @param {string} email - Email to validate
    * @returns {boolean} - Whether email is valid
    */
-  isValidEmail: (email) => {
+  isValidEmail: (email: string): boolean => {
     return FORM_CONFIG.emailRegex.test(email);
   },
 
   /**
    * Validate required fields
-   * @param {Object} formData - Form data object
-   * @param {Array} requiredFields - Array of required field names
-   * @returns {Object} - Validation result with isValid and errors
+   * @param {ContactFormData} formData - Form data object
+   * @param {string[]} requiredFields - Array of required field names
+   * @returns {ValidationResult} - Validation result with isValid and errors
    */
-  validateRequired: (formData, requiredFields = FORM_CONFIG.requiredFields) => {
-    const errors = [];
-    const missing = requiredFields.filter((field) => !formData[field]?.trim());
+  validateRequired: (
+    formData: ContactFormData,
+    requiredFields: string[] = FORM_CONFIG.requiredFields
+  ): ValidationResult => {
+    const errors: string[] = [];
+    const missing = requiredFields.filter((field) => {
+      const value = formData[field as keyof ContactFormData];
+      return !value?.toString().trim();
+    });
 
     if (missing.length > 0) {
       errors.push(ERROR_MESSAGES.required);
@@ -41,11 +56,11 @@ export const validation = {
 
   /**
    * Validate field lengths
-   * @param {Object} formData - Form data object
-   * @returns {Object} - Validation result
+   * @param {ContactFormData} formData - Form data object
+   * @returns {ValidationResult} - Validation result
    */
-  validateLengths: (formData) => {
-    const errors = [];
+  validateLengths: (formData: ContactFormData): ValidationResult => {
+    const errors: string[] = [];
 
     if (formData.name && formData.name.length > FORM_CONFIG.maxNameLength) {
       errors.push(ERROR_MESSAGES.nameTooLong);
@@ -73,10 +88,10 @@ export const validation = {
 
   /**
    * Comprehensive form validation
-   * @param {Object} formData - Form data object
-   * @returns {Object} - Complete validation result
+   * @param {ContactFormData} formData - Form data object
+   * @returns {ValidationResult} - Complete validation result
    */
-  validateForm: (formData) => {
+  validateForm: (formData: ContactFormData): ValidationResult => {
     const requiredCheck = validation.validateRequired(formData);
     const lengthCheck = validation.validateLengths(formData);
     const emailValid = formData.email
@@ -108,10 +123,10 @@ export const storage = {
   /**
    * Get item from localStorage with error handling
    * @param {string} key - Storage key
-   * @param {*} defaultValue - Default value if key doesn't exist
-   * @returns {*} - Stored value or default
+   * @param {T} defaultValue - Default value if key doesn't exist
+   * @returns {T} - Stored value or default
    */
-  getItem: (key, defaultValue = null) => {
+  getItem: <T>(key: string, defaultValue: T): T => {
     try {
       const item = localStorage.getItem(key);
       return item ? JSON.parse(item) : defaultValue;
@@ -124,10 +139,10 @@ export const storage = {
   /**
    * Set item in localStorage with error handling
    * @param {string} key - Storage key
-   * @param {*} value - Value to store
+   * @param {unknown} value - Value to store
    * @returns {boolean} - Success status
    */
-  setItem: (key, value) => {
+  setItem: (key: string, value: unknown): boolean => {
     try {
       localStorage.setItem(key, JSON.stringify(value));
       return true;
@@ -142,7 +157,7 @@ export const storage = {
    * @param {string} key - Storage key
    * @returns {boolean} - Success status
    */
-  removeItem: (key) => {
+  removeItem: (key: string): boolean => {
     try {
       localStorage.removeItem(key);
       return true;
@@ -156,7 +171,7 @@ export const storage = {
    * Clear all localStorage
    * @returns {boolean} - Success status
    */
-  clear: () => {
+  clear: (): boolean => {
     try {
       localStorage.clear();
       return true;
@@ -175,7 +190,7 @@ export const navigation = {
    * Get current route path
    * @returns {string} - Current path
    */
-  getCurrentPath: () => {
+  getCurrentPath: (): string => {
     return window.location.pathname;
   },
 
@@ -184,16 +199,16 @@ export const navigation = {
    * @param {string} route - Route to check
    * @returns {boolean} - Whether routes match
    */
-  isCurrentRoute: (route) => {
+  isCurrentRoute: (route: string): boolean => {
     return navigation.getCurrentPath() === route;
   },
 
   /**
    * Generate mailto link
-   * @param {Object} params - Email parameters
+   * @param {MailtoParams} params - Email parameters
    * @returns {string} - Mailto URL
    */
-  generateMailto: ({ to, subject = "", body = "" }) => {
+  generateMailto: ({ to, subject = "", body = "" }: MailtoParams): string => {
     const params = new URLSearchParams();
     if (subject) params.append("subject", subject);
     if (body) params.append("body", body);
@@ -205,7 +220,7 @@ export const navigation = {
    * Open external link in new tab
    * @param {string} url - URL to open
    */
-  openLinkInNewTab: (url) => {
+  openLinkInNewTab: (url: string): void => {
     window.open(url, "_blank", "noopener,noreferrer");
   },
 
@@ -213,7 +228,7 @@ export const navigation = {
    * Navigate to URL in current tab
    * @param {string} url - URL to navigate to
    */
-  navigateToUrl: (url) => {
+  navigateToUrl: (url: string): void => {
     window.location.href = url;
   },
 };
@@ -224,10 +239,13 @@ export const navigation = {
 export const dom = {
   /**
    * Scroll to element smoothly
-   * @param {string|Element} selector - Element selector or element
-   * @param {Object} options - Scroll options
+   * @param {string | Element} selector - Element selector or element
+   * @param {ScrollOptions} options - Scroll options
    */
-  scrollToElement: (selector, options = {}) => {
+  scrollToElement: (
+    selector: string | Element,
+    options: ScrollOptions = {}
+  ): void => {
     const element =
       typeof selector === "string"
         ? document.querySelector(selector)
@@ -244,11 +262,11 @@ export const dom = {
 
   /**
    * Add CSS class with optional timeout
-   * @param {Element} element - Target element
+   * @param {Element | null} element - Target element
    * @param {string} className - Class to add
    * @param {number} timeout - Optional timeout to remove class
    */
-  addClass: (element, className, timeout = 0) => {
+  addClass: (element: Element | null, className: string, timeout = 0): void => {
     if (element) {
       element.classList.add(className);
 
@@ -262,11 +280,11 @@ export const dom = {
 
   /**
    * Toggle CSS class
-   * @param {Element} element - Target element
+   * @param {Element | null} element - Target element
    * @param {string} className - Class to toggle
    * @returns {boolean} - Whether class is now present
    */
-  toggleClass: (element, className) => {
+  toggleClass: (element: Element | null, className: string): boolean => {
     if (element) {
       return element.classList.toggle(className);
     }
@@ -275,10 +293,10 @@ export const dom = {
 
   /**
    * Get element dimensions
-   * @param {Element} element - Target element
-   * @returns {Object} - Dimensions object
+   * @param {Element | null} element - Target element
+   * @returns {ElementDimensions | null} - Dimensions object
    */
-  getDimensions: (element) => {
+  getDimensions: (element: Element | null): ElementDimensions | null => {
     if (!element) return null;
 
     const rect = element.getBoundingClientRect();
@@ -304,15 +322,19 @@ export const performance = {
    * @param {boolean} immediate - Whether to call immediately
    * @returns {Function} - Debounced function
    */
-  debounce: (func, wait, immediate = false) => {
-    let timeout;
-    return function executedFunction(...args) {
+  debounce: <T extends (...args: unknown[]) => unknown>(
+    func: T,
+    wait: number,
+    immediate = false
+  ): ((...args: Parameters<T>) => void) => {
+    let timeout: NodeJS.Timeout | null;
+    return function executedFunction(...args: Parameters<T>) {
       const later = () => {
         timeout = null;
         if (!immediate) func(...args);
       };
       const callNow = immediate && !timeout;
-      clearTimeout(timeout);
+      if (timeout) clearTimeout(timeout);
       timeout = setTimeout(later, wait);
       if (callNow) func(...args);
     };
@@ -324,11 +346,14 @@ export const performance = {
    * @param {number} limit - Time limit in milliseconds
    * @returns {Function} - Throttled function
    */
-  throttle: (func, limit) => {
-    let inThrottle;
-    return function executedFunction(...args) {
+  throttle: <T extends (...args: unknown[]) => unknown>(
+    func: T,
+    limit: number
+  ): ((...args: Parameters<T>) => void) => {
+    let inThrottle: boolean;
+    return function executedFunction(...args: Parameters<T>) {
       if (!inThrottle) {
-        func.apply(this, args);
+        func(...args);
         inThrottle = true;
         setTimeout(() => {
           inThrottle = false;
@@ -341,12 +366,12 @@ export const performance = {
    * Measure function execution time
    * @param {Function} func - Function to measure
    * @param {string} label - Label for console output
-   * @returns {*} - Function result
+   * @returns {unknown} - Function result
    */
-  measureTime: (func, label = "Function") => {
-    const start = performance.now();
+  measureTime: <T>(func: () => T, label = "Function"): T => {
+    const start = globalThis.performance.now();
     const result = func();
-    const end = performance.now();
+    const end = globalThis.performance.now();
     console.log(`${label} execution time: ${(end - start).toFixed(2)}ms`);
     return result;
   },
@@ -358,11 +383,14 @@ export const performance = {
 export const datetime = {
   /**
    * Format date to German locale
-   * @param {Date|string} date - Date to format
-   * @param {Object} options - Intl.DateTimeFormat options
+   * @param {Date | string} date - Date to format
+   * @param {Intl.DateTimeFormatOptions} options - Intl.DateTimeFormat options
    * @returns {string} - Formatted date
    */
-  formatDate: (date, options = {}) => {
+  formatDate: (
+    date: Date | string,
+    options: Intl.DateTimeFormatOptions = {}
+  ): string => {
     const dateObj = new Date(date);
     return new Intl.DateTimeFormat("de-DE", {
       year: "numeric",
@@ -374,13 +402,15 @@ export const datetime = {
 
   /**
    * Get relative time string
-   * @param {Date|string} date - Date to compare
+   * @param {Date | string} date - Date to compare
    * @returns {string} - Relative time string
    */
-  getRelativeTime: (date) => {
+  getRelativeTime: (date: Date | string): string => {
     const dateObj = new Date(date);
     const now = new Date();
-    const diffInSeconds = Math.floor((now - dateObj) / 1000);
+    const diffInSeconds = Math.floor(
+      (now.getTime() - dateObj.getTime()) / 1000
+    );
 
     if (diffInSeconds < 60) return "vor wenigen Sekunden";
     if (diffInSeconds < 3600)
@@ -402,7 +432,7 @@ export const device = {
    * Check if device is mobile
    * @returns {boolean} - Whether device is mobile
    */
-  isMobile: () => {
+  isMobile: (): boolean => {
     return (
       window.innerWidth <= 850 ||
       /Android|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(
@@ -415,7 +445,7 @@ export const device = {
    * Check if device is tablet
    * @returns {boolean} - Whether device is tablet
    */
-  isTablet: () => {
+  isTablet: (): boolean => {
     return window.innerWidth > 850 && window.innerWidth <= 1000;
   },
 
@@ -423,15 +453,15 @@ export const device = {
    * Check if device is desktop
    * @returns {boolean} - Whether device is desktop
    */
-  isDesktop: () => {
+  isDesktop: (): boolean => {
     return window.innerWidth > 1000;
   },
 
   /**
    * Get device type
-   * @returns {string} - Device type
+   * @returns {DeviceType} - Device type
    */
-  getDeviceType: () => {
+  getDeviceType: (): DeviceType => {
     if (device.isMobile()) return "mobile";
     if (device.isTablet()) return "tablet";
     return "desktop";
@@ -439,10 +469,10 @@ export const device = {
 
   /**
    * Check if browser supports feature
-   * @param {string} feature - Feature to check
+   * @param {SupportedFeature} feature - Feature to check
    * @returns {boolean} - Whether feature is supported
    */
-  supportsFeature: (feature) => {
+  supportsFeature: (feature: SupportedFeature): boolean => {
     switch (feature) {
       case "serviceWorker":
         return "serviceWorker" in navigator;
@@ -467,7 +497,7 @@ export const clipboard = {
    * @param {string} text - Text to copy
    * @returns {Promise<boolean>} - Success status
    */
-  copy: async (text) => {
+  copy: async (text: string): Promise<boolean> => {
     try {
       if (navigator.clipboard) {
         await navigator.clipboard.writeText(text);

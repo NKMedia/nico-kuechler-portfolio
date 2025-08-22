@@ -18,7 +18,7 @@ const NotFound = lazy(() => import("./components/NotFound"));
  * Loading component displayed while lazy-loaded components are being fetched
  * @returns {JSX.Element} Loading indicator component
  */
-const Loading = () => (
+const Loading: React.FC = () => (
   <div className="content">
     <div
       style={{
@@ -46,7 +46,7 @@ const Loading = () => (
  *
  * @returns {JSX.Element} The main application component
  */
-function App() {
+const App: React.FC = () => {
   return (
     <ErrorBoundary>
       <Router>
@@ -68,6 +68,6 @@ function App() {
       </Router>
     </ErrorBoundary>
   );
-}
+};
 
 export default App;

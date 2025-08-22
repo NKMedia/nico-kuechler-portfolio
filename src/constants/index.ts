@@ -3,8 +3,20 @@
  * Centralized place for all hardcoded values and environment variables
  */
 
+import type {
+  AppConfig,
+  ContactInfo,
+  SocialLinks,
+  Features,
+  ApiConfig,
+  ThemeConfig,
+  NavigationItem,
+  FormConfig,
+  Constants,
+} from "../types";
+
 // App Information
-export const APP_CONFIG = {
+export const APP_CONFIG: AppConfig = {
   name: import.meta.env.VITE_APP_NAME || "Nico Küchler Portfolio",
   version: import.meta.env.VITE_APP_VERSION || "1.0.0",
   description:
@@ -14,7 +26,7 @@ export const APP_CONFIG = {
 };
 
 // Contact Information
-export const CONTACT_INFO = {
+export const CONTACT_INFO: ContactInfo = {
   email: import.meta.env.VITE_CONTACT_EMAIL || "mail@nico-kuechler.de",
   phone: import.meta.env.VITE_CONTACT_PHONE || "+49 171 816 816 4",
   location:
@@ -23,35 +35,35 @@ export const CONTACT_INFO = {
 };
 
 // Social Media Links
-export const SOCIAL_LINKS = {
+export const SOCIAL_LINKS: SocialLinks = {
   linkedin: import.meta.env.VITE_LINKEDIN_URL || "#",
   github: import.meta.env.VITE_GITHUB_URL || "#",
   xing: import.meta.env.VITE_XING_URL || "#",
 };
 
 // Feature Flags
-export const FEATURES = {
+export const FEATURES: Features = {
   contactForm: import.meta.env.VITE_ENABLE_CONTACT_FORM === "true",
   analytics: import.meta.env.VITE_ENABLE_ANALYTICS === "true",
   pwa: import.meta.env.VITE_ENABLE_PWA === "true",
 };
 
 // API Configuration
-export const API_CONFIG = {
+export const API_CONFIG: ApiConfig = {
   baseUrl: import.meta.env.VITE_API_BASE_URL || "",
   contactEndpoint: import.meta.env.VITE_CONTACT_FORM_ENDPOINT || "/api/contact",
   timeout: 10000, // 10 seconds
 };
 
 // Theme Configuration
-export const THEME_CONFIG = {
+export const THEME_CONFIG: ThemeConfig = {
   defaultTheme: "light",
   storageKey: "theme",
   transitionDuration: "0.3s",
 };
 
 // Navigation Items
-export const NAVIGATION_ITEMS = [
+export const NAVIGATION_ITEMS: NavigationItem[] = [
   { path: "/", label: "ÜBER MICH", icon: "fas fa-user" },
   { path: "/lebenslauf", label: "LEBENSLAUF", icon: "fas fa-file-alt" },
   { path: "/projekte", label: "PROJEKTE", icon: "fas fa-briefcase" },
@@ -59,7 +71,7 @@ export const NAVIGATION_ITEMS = [
 ];
 
 // Form Configuration
-export const FORM_CONFIG = {
+export const FORM_CONFIG: FormConfig = {
   maxNameLength: 100,
   maxSubjectLength: 200,
   maxMessageLength: 2000,
@@ -68,7 +80,7 @@ export const FORM_CONFIG = {
 };
 
 // Error Messages
-export const ERROR_MESSAGES = {
+export const ERROR_MESSAGES: Record<string, string> = {
   required: "Bitte füllen Sie alle Pflichtfelder aus.",
   invalidEmail: "Bitte geben Sie eine gültige E-Mail-Adresse ein.",
   nameTooLong: `Name darf maximal ${FORM_CONFIG.maxNameLength} Zeichen lang sein.`,
@@ -80,14 +92,14 @@ export const ERROR_MESSAGES = {
 };
 
 // Success Messages
-export const SUCCESS_MESSAGES = {
+export const SUCCESS_MESSAGES: Record<string, string> = {
   formSubmit:
     "Ihr E-Mail-Programm wurde geöffnet. Bitte senden Sie die Nachricht ab.",
   themeChanged: "Theme erfolgreich geändert",
 };
 
 // Responsive Breakpoints
-export const BREAKPOINTS = {
+export const BREAKPOINTS: Record<string, string> = {
   mobile: "480px",
   tablet: "850px",
   desktop: "1000px",
@@ -95,7 +107,7 @@ export const BREAKPOINTS = {
 };
 
 // Animation Durations
-export const ANIMATIONS = {
+export const ANIMATIONS: Record<string, string> = {
   fast: "0.2s",
   normal: "0.3s",
   slow: "0.5s",
@@ -103,20 +115,20 @@ export const ANIMATIONS = {
 };
 
 // Local Storage Keys
-export const STORAGE_KEYS = {
+export const STORAGE_KEYS: Record<string, string> = {
   theme: "theme",
   userPreferences: "userPreferences",
   contactFormData: "contactFormData",
 };
 
 // Development Configuration
-export const DEV_CONFIG = {
+export const DEV_CONFIG: Record<string, boolean> = {
   showErrorDetails: import.meta.env.NODE_ENV === "development",
   enableLogging: import.meta.env.NODE_ENV === "development",
   showPerformanceMetrics: import.meta.env.NODE_ENV === "development",
 };
 
-export default {
+const constants: Constants = {
   APP_CONFIG,
   CONTACT_INFO,
   SOCIAL_LINKS,
@@ -132,3 +144,5 @@ export default {
   STORAGE_KEYS,
   DEV_CONFIG,
 };
+
+export default constants;
