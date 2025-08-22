@@ -1,6 +1,7 @@
 /// <reference types="vite/client" />
 
 interface ImportMetaEnv {
+  // Custom application environment variables
   readonly VITE_APP_NAME: string;
   readonly VITE_APP_VERSION: string;
   readonly VITE_CONTACT_EMAIL: string;
@@ -15,8 +16,41 @@ interface ImportMetaEnv {
   readonly VITE_API_BASE_URL: string;
   readonly VITE_CONTACT_FORM_ENDPOINT: string;
   readonly VITE_GA_TRACKING_ID: string;
+  readonly NODE_ENV: string;
 }
 
-interface ImportMeta {
-  readonly env: ImportMetaEnv;
+// Module declarations for static assets
+declare module "*.jpg" {
+  const src: string;
+  export default src;
+}
+
+declare module "*.jpeg" {
+  const src: string;
+  export default src;
+}
+
+declare module "*.png" {
+  const src: string;
+  export default src;
+}
+
+declare module "*.webp" {
+  const src: string;
+  export default src;
+}
+
+declare module "*.gif" {
+  const src: string;
+  export default src;
+}
+
+declare module "*.svg" {
+  const src: string;
+  export default src;
+}
+
+declare module "*.ico" {
+  const src: string;
+  export default src;
 }

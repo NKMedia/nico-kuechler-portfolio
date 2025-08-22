@@ -1,21 +1,11 @@
 /// <reference types="vitest" />
 import { defineConfig } from "vite";
 import react from "@vitejs/plugin-react";
-import { visualizer } from "rollup-plugin-visualizer";
 import { resolve } from "path";
 
-// https://vite.dev/config/
+// https://vitejs.dev/config/
 export default defineConfig({
-  plugins: [
-    react(),
-    // Bundle analyzer - generates stats.html after build
-    visualizer({
-      filename: "dist/stats.html",
-      open: true,
-      gzipSize: true,
-      brotliSize: true,
-    }),
-  ],
+  plugins: [react()],
   resolve: {
     alias: {
       "@": resolve(__dirname, "src"),
@@ -27,28 +17,6 @@ export default defineConfig({
       "@styles": resolve(__dirname, "src/styles"),
       "@types": resolve(__dirname, "src/types"),
     },
-  },
-  build: {
-    rollupOptions: {
-      output: {
-        manualChunks: {
-          vendor: ["react", "react-dom"],
-          router: ["react-router-dom"],
-        },
-      },
-    },
-    sourcemap: true,
-    minify: "terser",
-    target: "es2015",
-  },
-  server: {
-    port: 5173,
-    host: true,
-    open: true,
-  },
-  preview: {
-    port: 4173,
-    host: true,
   },
   test: {
     globals: true,
@@ -66,6 +34,10 @@ export default defineConfig({
         "dist/",
         "public/",
       ],
+    },
+    // Mock browser APIs
+    deps: {
+      inline: ["@testing-library/user-event"],
     },
   },
 });

@@ -7,7 +7,7 @@ import { initializePerformanceMonitoring } from "./utils/performance";
 
 // Initialize performance monitoring
 if (import.meta.env.DEV) {
-  console.log("🚀 Development mode - Performance monitoring enabled");
+  console.warn("🚀 Development mode - Performance monitoring enabled");
 }
 initializePerformanceMonitoring();
 

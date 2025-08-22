@@ -180,7 +180,7 @@ export interface ServiceWorkerConfig {
 export interface SyncEvent extends Event {
   tag: string;
   lastChance: boolean;
-  waitUntil(promise: Promise<any>): void;
+  waitUntil(promise: Promise<unknown>): void;
 }
 
 // Project/Portfolio specific types
@@ -285,7 +285,7 @@ export interface Constants {
   BREAKPOINTS: Record<string, string>;
   ANIMATIONS: Record<string, string>;
   STORAGE_KEYS: Record<string, string>;
-  DEV_CONFIG: Record<string, any>;
+  DEV_CONFIG: Record<string, unknown>;
 }
 
 // Performance and Analytics types

@@ -54,7 +54,9 @@ function Kontakt(): React.ReactElement {
     if (!validationResult.isValid) {
       setSubmitStatus({
         type: "error",
-        message: validationResult.errors[0],
+        message:
+          validationResult.errors[0] ||
+          "Ein Validierungsfehler ist aufgetreten.",
       });
       return false;
     }

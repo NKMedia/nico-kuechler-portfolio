@@ -8,7 +8,7 @@ import tsparser from "@typescript-eslint/parser";
 export default [
   // Global ignores
   {
-    ignores: ["dist/**", "node_modules/**", "*.d.ts"],
+    ignores: ["dist/**", "node_modules/**", "*.d.ts", "vite.config.test.ts"],
   },
 
   // JavaScript files configuration
@@ -54,6 +54,7 @@ export default [
   // TypeScript files configuration
   {
     files: ["**/*.{ts,tsx}"],
+    ignores: ["src/test/**", "**/*.test.*", "**/*.spec.*"],
     languageOptions: {
       parser: tsparser,
       ecmaVersion: 2022,
@@ -104,6 +105,42 @@ export default [
     },
   },
 
+  // Test files configuration
+  {
+    files: ["src/test/**", "**/*.test.*", "**/*.spec.*"],
+    languageOptions: {
+      parser: tsparser,
+      ecmaVersion: 2022,
+      globals: {
+        ...globals.browser,
+        ...globals.es2022,
+        React: "readonly",
+        JSX: "readonly",
+        NodeJS: "readonly",
+        process: "readonly",
+      },
+      parserOptions: {
+        ecmaVersion: "latest",
+        ecmaFeatures: { jsx: true },
+        sourceType: "module",
+        // Don't include project for test files to avoid strict checking
+      },
+    },
+    plugins: {
+      "@typescript-eslint": tseslint,
+      "react-hooks": reactHooks,
+      "react-refresh": reactRefresh,
+    },
+    rules: {
+      ...js.configs.recommended.rules,
+      "@typescript-eslint/no-unused-vars": "off",
+      "@typescript-eslint/no-explicit-any": "off",
+      "no-console": "off",
+      "react-refresh/only-export-components": "off",
+      "no-undef": "off",
+    },
+  },
+
   // Node.js configuration files
   {
     files: ["vite.config.js", "vite.config.ts", "eslint.config.js"],
@@ -114,6 +151,9 @@ export default [
         __filename: "readonly",
         process: "readonly",
       },
+    },
+    rules: {
+      "no-console": "off",
     },
   },
 

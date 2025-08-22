@@ -80,7 +80,7 @@ export const FORM_CONFIG: FormConfig = {
 };
 
 // Error Messages
-export const ERROR_MESSAGES: Record<string, string> = {
+export const ERROR_MESSAGES = {
   required: "Bitte füllen Sie alle Pflichtfelder aus.",
   invalidEmail: "Bitte geben Sie eine gültige E-Mail-Adresse ein.",
   nameTooLong: `Name darf maximal ${FORM_CONFIG.maxNameLength} Zeichen lang sein.`,
@@ -89,14 +89,14 @@ export const ERROR_MESSAGES: Record<string, string> = {
   submitError:
     "Ein Fehler ist aufgetreten. Bitte versuchen Sie es erneut oder kontaktieren Sie mich direkt.",
   networkError: "Netzwerkfehler. Bitte prüfen Sie Ihre Internetverbindung.",
-};
+} as const;
 
 // Success Messages
-export const SUCCESS_MESSAGES: Record<string, string> = {
+export const SUCCESS_MESSAGES = {
   formSubmit:
     "Ihr E-Mail-Programm wurde geöffnet. Bitte senden Sie die Nachricht ab.",
   themeChanged: "Theme erfolgreich geändert",
-};
+} as const;
 
 // Responsive Breakpoints
 export const BREAKPOINTS: Record<string, string> = {

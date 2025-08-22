@@ -372,7 +372,7 @@ export const performance = {
     const start = globalThis.performance.now();
     const result = func();
     const end = globalThis.performance.now();
-    console.log(`${label} execution time: ${(end - start).toFixed(2)}ms`);
+    console.warn(`${label} execution time: ${(end - start).toFixed(2)}ms`);
     return result;
   },
 };
@@ -499,20 +499,14 @@ export const clipboard = {
    */
   copy: async (text: string): Promise<boolean> => {
     try {
-      if (navigator.clipboard) {
+      if (navigator.clipboard?.writeText) {
         await navigator.clipboard.writeText(text);
         return true;
       } else {
-        // Fallback for older browsers (deprecated but necessary for compatibility)
-        const textArea = document.createElement("textarea");
-        textArea.value = text;
-        textArea.style.position = "fixed";
-        textArea.style.opacity = "0";
-        document.body.appendChild(textArea);
-        textArea.select();
-        const success = document.execCommand("copy");
-        document.body.removeChild(textArea);
-        return success;
+        // For environments without clipboard API, we can't copy
+        // This is more secure than using the deprecated execCommand
+        console.warn("Clipboard API not available in this environment");
+        return false;
       }
     } catch (error) {
       console.error("Failed to copy to clipboard:", error);

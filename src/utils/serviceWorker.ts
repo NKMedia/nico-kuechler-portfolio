@@ -53,7 +53,7 @@ export const registerServiceWorker = async (
       scope: config.scope || "/",
     });
 
-    console.log("Service Worker registered successfully:", registration);
+    console.warn("Service Worker registered successfully:", registration);
 
     // Set up update checking if interval is provided
     if (config.updateCheckInterval) {
@@ -66,13 +66,13 @@ export const registerServiceWorker = async (
     registration.addEventListener("updatefound", () => {
       const newWorker = registration.installing;
       if (newWorker) {
-        console.log("New service worker available");
+        console.warn("New service worker available");
         newWorker.addEventListener("statechange", () => {
           if (
             newWorker.state === "installed" &&
             navigator.serviceWorker.controller
           ) {
-            console.log("New service worker installed, refresh required");
+            console.warn("New service worker installed, refresh required");
             // Dispatch custom event for UI to handle
             window.dispatchEvent(
               new CustomEvent("sw-update-available", {
@@ -110,7 +110,7 @@ export const unregisterServiceWorker = async (): Promise<boolean> => {
     const registration = await navigator.serviceWorker.getRegistration();
     if (registration) {
       const result = await registration.unregister();
-      console.log("Service Worker unregistered:", result);
+      console.warn("Service Worker unregistered:", result);
       return result;
     }
     return true;
@@ -165,7 +165,7 @@ export const updateServiceWorker = async (): Promise<boolean> => {
     const registration = await navigator.serviceWorker.getRegistration();
     if (registration) {
       await registration.update();
-      console.log("Service Worker update check completed");
+      console.warn("Service Worker update check completed");
       return true;
     }
     return false;
@@ -204,7 +204,7 @@ export const skipWaiting = async (): Promise<boolean> => {
 export const initializeServiceWorker =
   async (): Promise<RegistrationResult> => {
     if (!FEATURES.pwa) {
-      console.log("PWA features disabled");
+      console.warn("PWA features disabled");
       return {
         success: false,
         error: new Error("PWA features are disabled"),

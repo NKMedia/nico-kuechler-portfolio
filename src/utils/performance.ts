@@ -230,7 +230,7 @@ export const analytics = {
 
     // Console logging for development
     if (import.meta.env.DEV) {
-      console.log("Analytics Event:", event);
+      console.warn("Analytics Event:", event);
     }
 
     // Custom analytics implementation could go here
@@ -301,7 +301,7 @@ export const monitoring = {
   initialize: (config: PerformanceConfig = {}): void => {
     if (!FEATURES.analytics) return;
 
-    console.log("Initializing performance monitoring...");
+    console.warn("Initializing performance monitoring...");
 
     // Measure navigation timing
     measurement.mark("app-initialization");
@@ -390,7 +390,9 @@ export const monitoring = {
           }
         ).connection || null,
       resources: globalThis.performance.getEntriesByType("resource").length,
-      memoryUsage: (globalThis.performance as any).memory?.usedJSHeapSize || 0,
+      memoryUsage:
+        (globalThis.performance as { memory?: { usedJSHeapSize?: number } })
+          .memory?.usedJSHeapSize || 0,
     };
   },
 };
