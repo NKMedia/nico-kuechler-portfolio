@@ -1,5 +1,7 @@
 import React, { useState } from "react";
 import ProfileCard from "./ProfileCard";
+import { validation, navigation } from "@utils";
+import { CONTACT_INFO, SUCCESS_MESSAGES } from "@constants";
 
 /**
  * Kontakt component - Contact page with form and contact information
@@ -44,21 +46,12 @@ function Kontakt() {
    * @returns {boolean} - Whether form is valid
    */
   const validateForm = () => {
-    const { name, email, subject, message } = formData;
+    const validationResult = validation.validateForm(formData);
 
-    if (!name.trim() || !email.trim() || !subject.trim() || !message.trim()) {
+    if (!validationResult.isValid) {
       setSubmitStatus({
         type: "error",
-        message: "Bitte füllen Sie alle Pflichtfelder aus.",
-      });
-      return false;
-    }
-
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    if (!emailRegex.test(email)) {
-      setSubmitStatus({
-        type: "error",
-        message: "Bitte geben Sie eine gültige E-Mail-Adresse ein.",
+        message: validationResult.errors[0],
       });
       return false;
     }
@@ -82,21 +75,20 @@ function Kontakt() {
 
     try {
       // Create mailto link as fallback
-      const mailtoLink = `mailto:mail@nico-kuechler.de?subject=${encodeURIComponent(
-        formData.subject
-      )}&body=${encodeURIComponent(
-        `Name: ${formData.name}\nE-Mail: ${formData.email}\n\nNachricht:\n${formData.message}`
-      )}`;
+      const mailtoLink = navigation.generateMailto({
+        to: CONTACT_INFO.email,
+        subject: formData.subject,
+        body: `Name: ${formData.name}\nE-Mail: ${formData.email}\n\nNachricht:\n${formData.message}`,
+      });
 
       // For now, use mailto. In production, you would typically send to a backend service
-      window.location.href = mailtoLink;
+      navigation.navigateToUrl(mailtoLink);
 
       // Simulate success state
       setTimeout(() => {
         setSubmitStatus({
           type: "success",
-          message:
-            "Ihr E-Mail-Programm wurde geöffnet. Bitte senden Sie die Nachricht ab.",
+          message: SUCCESS_MESSAGES.formSubmit,
         });
         setFormData({ name: "", email: "", subject: "", message: "" });
         setIsSubmitting(false);
@@ -124,28 +116,28 @@ function Kontakt() {
             <h4>
               <i className="fas fa-envelope"></i> E-Mail
             </h4>
-            <p>mail@nico-kuechler.de</p>
+            <p>{CONTACT_INFO.email}</p>
           </div>
 
           <div className="contact-item">
             <h4>
               <i className="fas fa-phone"></i> Telefon
             </h4>
-            <p>+49 171 816 816 4</p>
+            <p>{CONTACT_INFO.phone}</p>
           </div>
 
           <div className="contact-item">
             <h4>
               <i className="fas fa-map-marker-alt"></i> Standort
             </h4>
-            <p>Maisach (Gernlinden), Bayern</p>
+            <p>{CONTACT_INFO.location}</p>
           </div>
 
           <div className="contact-item">
             <h4>
               <i className="fas fa-briefcase"></i> Verfügbarkeit
             </h4>
-            <p>Freelance-Projekte & Beratung</p>
+            <p>{CONTACT_INFO.availability}</p>
           </div>
         </div>
 
