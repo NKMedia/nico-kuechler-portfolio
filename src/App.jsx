@@ -13,14 +13,16 @@ const Kontakt = lazy(() => import("./components/Kontakt"));
 // Loading component
 const Loading = () => (
   <div className="content">
-    <div style={{ 
-      display: 'flex', 
-      justifyContent: 'center', 
-      alignItems: 'center', 
-      height: '400px',
-      fontSize: '1.2rem',
-      color: '#2563eb'
-    }}>
+    <div
+      style={{
+        display: "flex",
+        justifyContent: "center",
+        alignItems: "center",
+        height: "400px",
+        fontSize: "1.2rem",
+        color: "#2563eb",
+      }}
+    >
       Lädt...
     </div>
   </div>
