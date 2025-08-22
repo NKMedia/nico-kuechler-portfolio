@@ -6,7 +6,7 @@
 import type {
   AnalyticsEvent,
   PerformanceConfig,
-  PerformanceReport,
+  DetailedPerformanceReport,
 } from "../types";
 import { FEATURES } from "../constants";
 
@@ -376,48 +376,21 @@ export const monitoring = {
 
   /**
    * Generate performance report
-   * @returns {PerformanceReport} - Current performance metrics
+   * @returns Detailed performance report
    */
-  generateReport: (): Partial<PerformanceReport> => {
-    const timing = globalThis.performance.timing;
-
+  generateReport: (): Partial<DetailedPerformanceReport> => {
     return {
       timestamp: new Date().toISOString(),
       url: window.location.href,
       userAgent: navigator.userAgent,
-      connection: (
-        navigator as Navigator & {
-          connection?: { effectiveType?: string };
-        }
-      ).connection
-        ? {
-            effectiveType:
-              (
-                navigator as Navigator & {
-                  connection?: { effectiveType?: string };
-                }
-              ).connection!.effectiveType || "unknown",
-          }
-        : null,
-      timing: {
-        navigationStart: timing.navigationStart,
-        domContentLoaded:
-          timing.domContentLoadedEventEnd - timing.navigationStart,
-        loadComplete: timing.loadEventEnd - timing.navigationStart,
-        firstPaint: 0, // Would need paint timing API
-        firstContentfulPaint: 0, // Would need paint timing API
-      },
-      resources: globalThis.performance.getEntriesByType("resource").length,
-      memoryUsage:
+      connection:
         (
-          globalThis.performance as Performance & {
-            memory?: {
-              usedJSHeapSize: number;
-              totalJSHeapSize: number;
-              jsHeapSizeLimit: number;
-            };
+          navigator as Navigator & {
+            connection?: { effectiveType?: string };
           }
-        ).memory?.usedJSHeapSize || 0,
+        ).connection || null,
+      resources: globalThis.performance.getEntriesByType("resource").length,
+      memoryUsage: (globalThis.performance as any).memory?.usedJSHeapSize || 0,
     };
   },
 };

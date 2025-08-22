@@ -1,4 +1,3 @@
-import React from "react";
 import nicoPhoto from "../assets/nico_kuechler.jpg";
 
 /**
@@ -10,9 +9,9 @@ import nicoPhoto from "../assets/nico_kuechler.jpg";
  * - Contact links (email, phone, professional networks)
  * - Responsive design for different screen sizes
  *
- * @returns {JSX.Element} Profile card component
+ * @returns Profile card component
  */
-function ProfileCard() {
+function ProfileCard(): React.ReactElement {
   return (
     <div className="profile-card">
       <div className="profile-info">

@@ -1,12 +1,11 @@
-import React from "react";
 import ProfileCard from "./ProfileCard";
 
 /**
  * Datenschutz component for GDPR compliance (German privacy policy)
  *
- * @returns {JSX.Element} Privacy policy page component
+ * @returns Privacy policy page component
  */
-function Datenschutz() {
+function Datenschutz(): React.ReactElement {
   return (
     <div className="content">
       <ProfileCard />

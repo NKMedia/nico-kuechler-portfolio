@@ -1,7 +1,17 @@
-import React from "react";
 import ProfileCard from "./ProfileCard";
 
-function Projekte() {
+/**
+ * Projekte component - Portfolio page displaying selected projects and work
+ *
+ * Features:
+ * - Project cards with descriptions
+ * - Technology stacks and timeframes
+ * - Professional portfolio overview
+ * - Responsive grid layout
+ *
+ * @returns Portfolio projects page component
+ */
+function Projekte(): React.ReactElement {
   return (
     <div className="content">
       <ProfileCard />

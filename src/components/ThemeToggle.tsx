@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 
 /**
  * ThemeToggle component for switching between light and dark themes
@@ -10,10 +10,10 @@ import React, { useState, useEffect } from "react";
  * - localStorage persistence for theme preference
  * - Automatic sync with DOM state on mount
  *
- * @returns {JSX.Element} Theme toggle button component
+ * @returns Theme toggle button component
  */
-function ThemeToggle() {
-  const [isDark, setIsDark] = useState(false);
+function ThemeToggle(): React.ReactElement {
+  const [isDark, setIsDark] = useState<boolean>(false);
 
   // Initialize theme from localStorage and sync with DOM state
   useEffect(() => {
@@ -33,7 +33,7 @@ function ThemeToggle() {
     }
   }, []);
 
-  const toggleTheme = () => {
+  const toggleTheme = (): void => {
     const newTheme = !isDark;
     setIsDark(newTheme);
 

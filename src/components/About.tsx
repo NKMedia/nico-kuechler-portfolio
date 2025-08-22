@@ -1,4 +1,3 @@
-import React from "react";
 import { useNavigate } from "react-router-dom";
 import ProfileCard from "./ProfileCard";
 
@@ -11,9 +10,9 @@ import ProfileCard from "./ProfileCard";
  * - Call-to-action buttons for navigation
  * - Responsive layout for different screen sizes
  *
- * @returns {JSX.Element} About page component
+ * @returns About page component
  */
-function About() {
+function About(): React.ReactElement {
   const navigate = useNavigate();
 
   return (

@@ -1,4 +1,3 @@
-import React from "react";
 import { Link } from "react-router-dom";
 
 /**
@@ -10,9 +9,9 @@ import { Link } from "react-router-dom";
  * - Consistent styling with the rest of the site
  * - Helpful suggestions for users
  *
- * @returns {JSX.Element} 404 error page component
+ * @returns 404 error page component
  */
-function NotFound() {
+function NotFound(): React.ReactElement {
   return (
     <div className="content">
       <div

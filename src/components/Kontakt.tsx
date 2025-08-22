@@ -1,7 +1,8 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import ProfileCard from "./ProfileCard";
-import { validation, navigation } from "@utils";
-import { CONTACT_INFO, SUCCESS_MESSAGES } from "@constants";
+import { validation, navigation } from "../utils";
+import { CONTACT_INFO, SUCCESS_MESSAGES } from "../constants";
+import { ContactFormData, SubmitStatus } from "../types";
 
 /**
  * Kontakt component - Contact page with form and contact information
@@ -12,24 +13,26 @@ import { CONTACT_INFO, SUCCESS_MESSAGES } from "@constants";
  * - Form submission via mailto or external service
  * - Loading states and user feedback
  *
- * @returns {JSX.Element} Contact page component
+ * @returns Contact page component
  */
-function Kontakt() {
-  const [formData, setFormData] = useState({
+function Kontakt(): React.ReactElement {
+  const [formData, setFormData] = useState<ContactFormData>({
     name: "",
     email: "",
     subject: "",
     message: "",
   });
 
-  const [isSubmitting, setIsSubmitting] = useState(false);
-  const [submitStatus, setSubmitStatus] = useState(null);
+  const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
+  const [submitStatus, setSubmitStatus] = useState<SubmitStatus | null>(null);
 
   /**
    * Handle input field changes
-   * @param {Event} e - Input change event
+   * @param e - Input change event
    */
-  const handleInputChange = (e) => {
+  const handleInputChange = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+  ): void => {
     const { name, value } = e.target;
     setFormData((prev) => ({
       ...prev,
@@ -43,9 +46,9 @@ function Kontakt() {
 
   /**
    * Validate form data
-   * @returns {boolean} - Whether form is valid
+   * @returns Whether form is valid
    */
-  const validateForm = () => {
+  const validateForm = (): boolean => {
     const validationResult = validation.validateForm(formData);
 
     if (!validationResult.isValid) {
@@ -61,9 +64,11 @@ function Kontakt() {
 
   /**
    * Handle form submission
-   * @param {Event} e - Form submit event
+   * @param e - Form submit event
    */
-  const handleSubmit = async (e) => {
+  const handleSubmit = async (
+    e: React.FormEvent<HTMLFormElement>
+  ): Promise<void> => {
     e.preventDefault();
 
     if (!validateForm()) {
@@ -203,7 +208,7 @@ function Kontakt() {
                 id="message"
                 name="message"
                 placeholder="Beschreiben Sie Ihr Projekt oder Ihre Anfrage..."
-                rows="5"
+                rows={5}
                 value={formData.message}
                 onChange={handleInputChange}
                 disabled={isSubmitting}

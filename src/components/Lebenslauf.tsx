@@ -1,7 +1,18 @@
-import React from "react";
 import ProfileCard from "./ProfileCard";
 
-function Lebenslauf() {
+/**
+ * Lebenslauf component - CV page displaying professional experience and education
+ *
+ * Features:
+ * - Professional experience timeline
+ * - Education history
+ * - Technical skills overview
+ * - Language proficiencies
+ * - Additional qualifications
+ *
+ * @returns CV page component
+ */
+function Lebenslauf(): React.ReactElement {
   return (
     <div className="content">
       <ProfileCard />

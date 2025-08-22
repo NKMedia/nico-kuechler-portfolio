@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import { Link, useLocation } from "react-router-dom";
 import ThemeToggle from "./ThemeToggle";
 
@@ -12,17 +12,17 @@ import ThemeToggle from "./ThemeToggle";
  * - Integrated theme toggle button
  * - Accessibility support with aria-labels
  *
- * @returns {JSX.Element} Header component with navigation
+ * @returns Header component with navigation
  */
-function Header() {
+function Header(): React.ReactElement {
   const location = useLocation();
-  const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [isMenuOpen, setIsMenuOpen] = useState<boolean>(false);
 
-  const toggleMenu = () => {
+  const toggleMenu = (): void => {
     setIsMenuOpen(!isMenuOpen);
   };
 
-  const closeMenu = () => {
+  const closeMenu = (): void => {
     setIsMenuOpen(false);
   };
 

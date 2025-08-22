@@ -1,12 +1,11 @@
-import React from "react";
 import ProfileCard from "./ProfileCard";
 
 /**
  * Impressum component for legal information (German legal requirement)
  *
- * @returns {JSX.Element} Impressum page component
+ * @returns Impressum page component
  */
-function Impressum() {
+function Impressum(): React.ReactElement {
   return (
     <div className="content">
       <ProfileCard />

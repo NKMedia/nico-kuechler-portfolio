@@ -289,7 +289,7 @@ export interface Constants {
 }
 
 // Performance and Analytics types
-export interface PerformanceMetrics {
+export interface DetailedPerformanceMetrics {
   name: string;
   value: number;
   rating: "good" | "needs-improvement" | "poor";
@@ -310,13 +310,7 @@ export interface PerformanceConfig {
   trackLongTasks?: boolean;
 }
 
-export interface ConnectionInfo {
-  effectiveType: string;
-  rtt?: number;
-  downlink?: number;
-}
-
-export interface PerformanceReport {
+export interface DetailedPerformanceReport {
   timestamp: string;
   url: string;
   userAgent: string;

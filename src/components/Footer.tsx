@@ -1,12 +1,11 @@
-import React from "react";
 import { Link } from "react-router-dom";
 
 /**
  * Footer component with legal links and contact information
  *
- * @returns {JSX.Element} Footer component
+ * @returns Footer component
  */
-function Footer() {
+function Footer(): React.ReactElement {
   return (
     <footer className="footer">
       <div className="footer-left">

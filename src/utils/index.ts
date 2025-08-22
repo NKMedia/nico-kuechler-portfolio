@@ -510,7 +510,7 @@ export const clipboard = {
         textArea.style.opacity = "0";
         document.body.appendChild(textArea);
         textArea.select();
-        const success = document.execCommand("copy"); // eslint-disable-line deprecation/deprecation
+        const success = document.execCommand("copy");
         document.body.removeChild(textArea);
         return success;
       }
