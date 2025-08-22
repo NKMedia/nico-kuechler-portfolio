@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useTheme } from "../hooks";
 
 /**
  * ThemeToggle component for switching between light and dark themes
@@ -13,44 +13,15 @@ import { useState, useEffect } from "react";
  * @returns Theme toggle button component
  */
 function ThemeToggle(): React.ReactElement {
-  const [isDark, setIsDark] = useState<boolean>(false);
-
-  // Initialize theme from localStorage and sync with DOM state
-  useEffect(() => {
-    const savedTheme = localStorage.getItem("theme");
-    const systemPrefersDark = window.matchMedia(
-      "(prefers-color-scheme: dark)"
-    ).matches;
-    const shouldUseDark =
-      savedTheme === "dark" || (!savedTheme && systemPrefersDark);
-
-    if (shouldUseDark) {
-      setIsDark(true);
-      document.body.classList.add("dark-theme");
-    } else {
-      setIsDark(false);
-      document.body.classList.remove("dark-theme");
-    }
-  }, []);
-
-  const toggleTheme = (): void => {
-    const newTheme = !isDark;
-    setIsDark(newTheme);
-
-    if (newTheme) {
-      document.body.classList.add("dark-theme");
-      localStorage.setItem("theme", "dark");
-    } else {
-      document.body.classList.remove("dark-theme");
-      localStorage.setItem("theme", "light");
-    }
-  };
+  const { theme, toggleTheme } = useTheme();
+  const isDark = theme === "dark";
 
   return (
     <button
       className="theme-toggle"
       onClick={toggleTheme}
       aria-label={isDark ? "Switch to light mode" : "Switch to dark mode"}
+      data-testid="theme-toggle"
     >
       <i className={isDark ? "fas fa-sun" : "fas fa-moon"}></i>
     </button>

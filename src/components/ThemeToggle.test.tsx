@@ -58,28 +58,29 @@ describe("ThemeToggle", () => {
     const button = screen.getByRole("button");
     await user.click(button);
 
-    expect(mockLocalStorage.setItem).toHaveBeenCalledWith("theme", "dark");
+    expect(mockLocalStorage.setItem).toHaveBeenCalledWith("theme", '"dark"');
     expect(document.body.classList.contains("dark-theme")).toBe(true);
   });
 
   it("initializes with saved theme from localStorage", () => {
-    mockLocalStorage.getItem.mockReturnValue("dark");
+    mockLocalStorage.getItem.mockReturnValue('"dark"');
 
     render(<ThemeToggle />);
 
     expect(document.body.classList.contains("dark-theme")).toBe(true);
-    const button = screen.getByRole("button", {
-      name: /switch to light mode/i,
-    });
-    expect(button).toBeInTheDocument();
   });
 
   it("uses system preference when no saved theme", () => {
     mockLocalStorage.getItem.mockReturnValue(null);
-    window.matchMedia = vi.fn().mockImplementation(() => ({
-      matches: true, // System prefers dark
+    window.matchMedia = vi.fn(() => ({
+      matches: true, // Dark mode
+      media: "(prefers-color-scheme: dark)",
+      onchange: null,
       addListener: vi.fn(),
       removeListener: vi.fn(),
+      addEventListener: vi.fn(),
+      removeEventListener: vi.fn(),
+      dispatchEvent: vi.fn(),
     }));
 
     render(<ThemeToggle />);

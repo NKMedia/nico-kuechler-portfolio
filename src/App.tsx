@@ -3,6 +3,7 @@ import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Header from "./components/Header";
 import Footer from "./components/Footer";
 import ErrorBoundary from "./components/ErrorBoundary";
+import SkipLinks from "./components/SkipLinks";
 import "./App.css";
 
 // Lazy loading for better performance
@@ -50,19 +51,22 @@ const App: React.FC = () => {
   return (
     <ErrorBoundary>
       <Router>
+        <SkipLinks />
         <div className="main-bg fade-in">
           <Header />
-          <Suspense fallback={<Loading />}>
-            <Routes>
-              <Route path="/" element={<About />} />
-              <Route path="/lebenslauf" element={<Lebenslauf />} />
-              <Route path="/projekte" element={<Projekte />} />
-              <Route path="/kontakt" element={<Kontakt />} />
-              <Route path="/impressum" element={<Impressum />} />
-              <Route path="/datenschutz" element={<Datenschutz />} />
-              <Route path="*" element={<NotFound />} />
-            </Routes>
-          </Suspense>
+          <main id="main-content" tabIndex={-1}>
+            <Suspense fallback={<Loading />}>
+              <Routes>
+                <Route path="/" element={<About />} />
+                <Route path="/lebenslauf" element={<Lebenslauf />} />
+                <Route path="/projekte" element={<Projekte />} />
+                <Route path="/kontakt" element={<Kontakt />} />
+                <Route path="/impressum" element={<Impressum />} />
+                <Route path="/datenschutz" element={<Datenschutz />} />
+                <Route path="*" element={<NotFound />} />
+              </Routes>
+            </Suspense>
+          </main>
           <Footer />
         </div>
       </Router>

@@ -63,6 +63,7 @@ export interface ContactFormData {
   email: string;
   subject: string;
   message: string;
+  [key: string]: string;
 }
 
 export interface ValidationResult {
@@ -268,6 +269,11 @@ export interface UseFormReturn<T> {
   reset: () => void;
   setFieldError: (field: keyof T, error: string) => void;
   clearErrors: () => void;
+  setFieldValues: (newValues: Partial<T>) => void;
+  getFieldError: (field: keyof T) => string;
+  hasFieldError: (field: keyof T) => boolean;
+  hasErrors: () => boolean;
+  isValid: () => boolean;
 }
 
 // Environment and configuration types

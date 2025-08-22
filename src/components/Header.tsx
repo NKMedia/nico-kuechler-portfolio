@@ -1,6 +1,8 @@
-import { useState } from "react";
-import { Link, useLocation } from "react-router-dom";
+import { useState, useEffect } from "react";
+import { useLocation } from "react-router-dom";
+import { useFocusTrap } from "../hooks";
 import ThemeToggle from "./ThemeToggle";
+import NavigationLink from "./NavigationLink";
 
 /**
  * Header component with navigation and mobile menu functionality
@@ -11,12 +13,14 @@ import ThemeToggle from "./ThemeToggle";
  * - Hamburger menu for mobile devices
  * - Integrated theme toggle button
  * - Accessibility support with aria-labels
+ * - Keyboard navigation support
  *
  * @returns Header component with navigation
  */
 function Header(): React.ReactElement {
   const location = useLocation();
   const [isMenuOpen, setIsMenuOpen] = useState<boolean>(false);
+  const mobileNavRef = useFocusTrap<HTMLElement>();
 
   const toggleMenu = (): void => {
     setIsMenuOpen(!isMenuOpen);
@@ -26,79 +30,100 @@ function Header(): React.ReactElement {
     setIsMenuOpen(false);
   };
 
+  // Handle escape key to close menu
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent): void => {
+      if (e.key === "Escape" && isMenuOpen) {
+        closeMenu();
+      }
+    };
+
+    if (isMenuOpen) {
+      document.addEventListener("keydown", handleKeyDown);
+    }
+
+    return () => {
+      document.removeEventListener("keydown", handleKeyDown);
+    };
+  }, [isMenuOpen]);
+
+  // Helper function to determine if a path is active
+  const isActivePath = (path: string): boolean => location.pathname === path;
+
   return (
     <header className="header">
       <div className="header-left">
-        <span className="dot" />
+        <span className="dot" aria-hidden="true" />
         <span className="name">Nico Küchler</span>
         <span className="role">
           / SENIOR SOFTWARE DEVELOPER & MEDIA DESIGNER
         </span>
       </div>
       <div className="header-right">
-        <nav className="header-nav">
-          <Link to="/" className={location.pathname === "/" ? "active" : ""}>
+        <nav
+          className="header-nav"
+          id="main-navigation"
+          aria-label="Main navigation"
+        >
+          <NavigationLink to="/" isActive={isActivePath("/")}>
             ÜBER MICH
-          </Link>
-          <Link
+          </NavigationLink>
+          <NavigationLink
             to="/lebenslauf"
-            className={location.pathname === "/lebenslauf" ? "active" : ""}
+            isActive={isActivePath("/lebenslauf")}
           >
             LEBENSLAUF
-          </Link>
-          <Link
-            to="/projekte"
-            className={location.pathname === "/projekte" ? "active" : ""}
-          >
+          </NavigationLink>
+          <NavigationLink to="/projekte" isActive={isActivePath("/projekte")}>
             PROJEKTE
-          </Link>
-          <Link
-            to="/kontakt"
-            className={location.pathname === "/kontakt" ? "active" : ""}
-          >
+          </NavigationLink>
+          <NavigationLink to="/kontakt" isActive={isActivePath("/kontakt")}>
             KONTAKT
-          </Link>
+          </NavigationLink>
         </nav>
         <ThemeToggle />
         <button
           className={`hamburger ${isMenuOpen ? "active" : ""}`}
           onClick={toggleMenu}
           aria-label="Toggle menu"
+          aria-expanded={isMenuOpen}
+          aria-controls="mobile-navigation"
         >
           <span></span>
           <span></span>
           <span></span>
         </button>
       </div>
-      <nav className={`mobile-nav ${isMenuOpen ? "active" : ""}`}>
-        <Link
-          to="/"
-          className={location.pathname === "/" ? "active" : ""}
-          onClick={closeMenu}
-        >
+      <nav
+        id="mobile-navigation"
+        className={`mobile-nav ${isMenuOpen ? "active" : ""}`}
+        aria-label="Mobile navigation"
+        ref={mobileNavRef}
+      >
+        <NavigationLink to="/" isActive={isActivePath("/")} onClick={closeMenu}>
           ÜBER MICH
-        </Link>
-        <Link
+        </NavigationLink>
+        <NavigationLink
           to="/lebenslauf"
-          className={location.pathname === "/lebenslauf" ? "active" : ""}
+          isActive={isActivePath("/lebenslauf")}
           onClick={closeMenu}
         >
           LEBENSLAUF
-        </Link>
-        <Link
+        </NavigationLink>
+        <NavigationLink
           to="/projekte"
-          className={location.pathname === "/projekte" ? "active" : ""}
+          isActive={isActivePath("/projekte")}
           onClick={closeMenu}
         >
           PROJEKTE
-        </Link>
-        <Link
+        </NavigationLink>
+        <NavigationLink
           to="/kontakt"
-          className={location.pathname === "/kontakt" ? "active" : ""}
+          isActive={isActivePath("/kontakt")}
           onClick={closeMenu}
         >
           KONTAKT
-        </Link>
+        </NavigationLink>
       </nav>
     </header>
   );

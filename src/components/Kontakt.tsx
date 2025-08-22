@@ -1,6 +1,7 @@
 import { useState } from "react";
 import ProfileCard from "./ProfileCard";
 import { validation, navigation } from "../utils";
+import { useForm } from "../hooks";
 import { CONTACT_INFO, SUCCESS_MESSAGES } from "../constants";
 import { ContactFormData, SubmitStatus } from "../types";
 
@@ -16,68 +17,45 @@ import { ContactFormData, SubmitStatus } from "../types";
  * @returns Contact page component
  */
 function Kontakt(): React.ReactElement {
-  const [formData, setFormData] = useState<ContactFormData>({
-    name: "",
-    email: "",
-    subject: "",
-    message: "",
-  });
-
-  const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
   const [submitStatus, setSubmitStatus] = useState<SubmitStatus | null>(null);
 
-  /**
-   * Handle input field changes
-   * @param e - Input change event
-   */
-  const handleInputChange = (
-    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
-  ): void => {
-    const { name, value } = e.target;
-    setFormData((prev) => ({
-      ...prev,
-      [name]: value,
-    }));
-    // Clear any previous status when user starts typing
-    if (submitStatus) {
-      setSubmitStatus(null);
-    }
-  };
-
-  /**
-   * Validate form data
-   * @returns Whether form is valid
-   */
-  const validateForm = (): boolean => {
+  // Form validation function
+  const validateContactForm = (formData: ContactFormData) => {
     const validationResult = validation.validateForm(formData);
+    const errors: Record<keyof ContactFormData, string> = {
+      name: "",
+      email: "",
+      subject: "",
+      message: "",
+    };
 
     if (!validationResult.isValid) {
-      setSubmitStatus({
-        type: "error",
-        message:
-          validationResult.errors[0] ||
-          "Ein Validierungsfehler ist aufgetreten.",
+      validationResult.errors.forEach((error) => {
+        if (error.includes("Name")) errors.name = error;
+        else if (error.includes("E-Mail")) errors.email = error;
+        else if (error.includes("Betreff")) errors.subject = error;
+        else if (error.includes("Nachricht")) errors.message = error;
       });
-      return false;
     }
 
-    return true;
+    return errors;
   };
+
+  // Use form hook
+  const form = useForm<ContactFormData>(
+    {
+      name: "",
+      email: "",
+      subject: "",
+      message: "",
+    },
+    validateContactForm
+  );
 
   /**
    * Handle form submission
-   * @param e - Form submit event
    */
-  const handleSubmit = async (
-    e: React.FormEvent<HTMLFormElement>
-  ): Promise<void> => {
-    e.preventDefault();
-
-    if (!validateForm()) {
-      return;
-    }
-
-    setIsSubmitting(true);
+  const handleFormSubmit = async (formData: ContactFormData): Promise<void> => {
     setSubmitStatus(null);
 
     try {
@@ -97,8 +75,7 @@ function Kontakt(): React.ReactElement {
           type: "success",
           message: SUCCESS_MESSAGES.formSubmit,
         });
-        setFormData({ name: "", email: "", subject: "", message: "" });
-        setIsSubmitting(false);
+        form.reset();
       }, 1000);
     } catch (error) {
       console.error("Error submitting form:", error);
@@ -107,7 +84,6 @@ function Kontakt(): React.ReactElement {
         message:
           "Ein Fehler ist aufgetreten. Bitte versuchen Sie es erneut oder kontaktieren Sie mich direkt.",
       });
-      setIsSubmitting(false);
     }
   };
 
@@ -164,7 +140,7 @@ function Kontakt(): React.ReactElement {
             </div>
           )}
 
-          <form onSubmit={handleSubmit}>
+          <form onSubmit={form.handleSubmit(handleFormSubmit)}>
             <div className="form-group">
               <label htmlFor="name">Name *</label>
               <input
@@ -172,11 +148,20 @@ function Kontakt(): React.ReactElement {
                 name="name"
                 type="text"
                 placeholder="Ihr Name"
-                value={formData.name}
-                onChange={handleInputChange}
-                disabled={isSubmitting}
+                value={form.values.name}
+                onChange={form.handleChange}
+                disabled={form.isSubmitting}
                 required
+                aria-describedby={
+                  form.hasFieldError("name") ? "name-error" : undefined
+                }
+                aria-invalid={form.hasFieldError("name")}
               />
+              {form.hasFieldError("name") && (
+                <div id="name-error" className="field-error" role="alert">
+                  {form.getFieldError("name")}
+                </div>
+              )}
             </div>
             <div className="form-group">
               <label htmlFor="email">E-Mail *</label>
@@ -185,11 +170,20 @@ function Kontakt(): React.ReactElement {
                 name="email"
                 type="email"
                 placeholder="ihre.email@beispiel.com"
-                value={formData.email}
-                onChange={handleInputChange}
-                disabled={isSubmitting}
+                value={form.values.email}
+                onChange={form.handleChange}
+                disabled={form.isSubmitting}
                 required
+                aria-describedby={
+                  form.hasFieldError("email") ? "email-error" : undefined
+                }
+                aria-invalid={form.hasFieldError("email")}
               />
+              {form.hasFieldError("email") && (
+                <div id="email-error" className="field-error" role="alert">
+                  {form.getFieldError("email")}
+                </div>
+              )}
             </div>
             <div className="form-group">
               <label htmlFor="subject">Betreff *</label>
@@ -198,11 +192,20 @@ function Kontakt(): React.ReactElement {
                 name="subject"
                 type="text"
                 placeholder="Betreff Ihrer Nachricht"
-                value={formData.subject}
-                onChange={handleInputChange}
-                disabled={isSubmitting}
+                value={form.values.subject}
+                onChange={form.handleChange}
+                disabled={form.isSubmitting}
                 required
+                aria-describedby={
+                  form.hasFieldError("subject") ? "subject-error" : undefined
+                }
+                aria-invalid={form.hasFieldError("subject")}
               />
+              {form.hasFieldError("subject") && (
+                <div id="subject-error" className="field-error" role="alert">
+                  {form.getFieldError("subject")}
+                </div>
+              )}
             </div>
             <div className="form-group">
               <label htmlFor="message">Nachricht *</label>
@@ -211,14 +214,27 @@ function Kontakt(): React.ReactElement {
                 name="message"
                 placeholder="Beschreiben Sie Ihr Projekt oder Ihre Anfrage..."
                 rows={5}
-                value={formData.message}
-                onChange={handleInputChange}
-                disabled={isSubmitting}
+                value={form.values.message}
+                onChange={form.handleChange}
+                disabled={form.isSubmitting}
                 required
-              ></textarea>
+                aria-describedby={
+                  form.hasFieldError("message") ? "message-error" : undefined
+                }
+                aria-invalid={form.hasFieldError("message")}
+              />
+              {form.hasFieldError("message") && (
+                <div id="message-error" className="field-error" role="alert">
+                  {form.getFieldError("message")}
+                </div>
+              )}
             </div>
-            <button type="submit" className="btn-blue" disabled={isSubmitting}>
-              {isSubmitting ? (
+            <button
+              type="submit"
+              className="btn-blue"
+              disabled={form.isSubmitting}
+            >
+              {form.isSubmitting ? (
                 <>
                   <i className="fas fa-spinner fa-spin"></i> Wird gesendet...
                 </>
