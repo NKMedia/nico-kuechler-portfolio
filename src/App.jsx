@@ -2,6 +2,7 @@ import React, { Suspense, lazy } from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Header from "./components/Header";
 import Footer from "./components/Footer";
+import ErrorBoundary from "./components/ErrorBoundary";
 import "./App.css";
 
 // Lazy loading for better performance
@@ -11,6 +12,7 @@ const Projekte = lazy(() => import("./components/Projekte"));
 const Kontakt = lazy(() => import("./components/Kontakt"));
 const Impressum = lazy(() => import("./components/Impressum"));
 const Datenschutz = lazy(() => import("./components/Datenschutz"));
+const NotFound = lazy(() => import("./components/NotFound"));
 
 /**
  * Loading component displayed while lazy-loaded components are being fetched
@@ -46,22 +48,25 @@ const Loading = () => (
  */
 function App() {
   return (
-    <Router>
-      <div className="main-bg fade-in">
-        <Header />
-        <Suspense fallback={<Loading />}>
-          <Routes>
-            <Route path="/" element={<About />} />
-            <Route path="/lebenslauf" element={<Lebenslauf />} />
-            <Route path="/projekte" element={<Projekte />} />
-            <Route path="/kontakt" element={<Kontakt />} />
-            <Route path="/impressum" element={<Impressum />} />
-            <Route path="/datenschutz" element={<Datenschutz />} />
-          </Routes>
-        </Suspense>
-        <Footer />
-      </div>
-    </Router>
+    <ErrorBoundary>
+      <Router>
+        <div className="main-bg fade-in">
+          <Header />
+          <Suspense fallback={<Loading />}>
+            <Routes>
+              <Route path="/" element={<About />} />
+              <Route path="/lebenslauf" element={<Lebenslauf />} />
+              <Route path="/projekte" element={<Projekte />} />
+              <Route path="/kontakt" element={<Kontakt />} />
+              <Route path="/impressum" element={<Impressum />} />
+              <Route path="/datenschutz" element={<Datenschutz />} />
+              <Route path="*" element={<NotFound />} />
+            </Routes>
+          </Suspense>
+          <Footer />
+        </div>
+      </Router>
+    </ErrorBoundary>
   );
 }
 

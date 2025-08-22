@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 
 /**
  * ThemeToggle component for switching between light and dark themes
@@ -7,20 +7,43 @@ import React, { useState } from "react";
  * - Toggle between light and dark themes
  * - Visual feedback with moon/sun icons
  * - Accessibility support with aria-labels
- * - Direct DOM manipulation for theme switching
+ * - localStorage persistence for theme preference
+ * - Automatic sync with DOM state on mount
  *
  * @returns {JSX.Element} Theme toggle button component
- *
- * @todo Consider using React Context for theme management
- * @todo Add localStorage persistence for theme preference
- * @todo Sync component state with actual DOM theme state on mount
  */
 function ThemeToggle() {
   const [isDark, setIsDark] = useState(false);
 
+  // Initialize theme from localStorage and sync with DOM state
+  useEffect(() => {
+    const savedTheme = localStorage.getItem("theme");
+    const systemPrefersDark = window.matchMedia(
+      "(prefers-color-scheme: dark)"
+    ).matches;
+    const shouldUseDark =
+      savedTheme === "dark" || (!savedTheme && systemPrefersDark);
+
+    if (shouldUseDark) {
+      setIsDark(true);
+      document.body.classList.add("dark-theme");
+    } else {
+      setIsDark(false);
+      document.body.classList.remove("dark-theme");
+    }
+  }, []);
+
   const toggleTheme = () => {
-    setIsDark(!isDark);
-    document.body.classList.toggle("dark-theme");
+    const newTheme = !isDark;
+    setIsDark(newTheme);
+
+    if (newTheme) {
+      document.body.classList.add("dark-theme");
+      localStorage.setItem("theme", "dark");
+    } else {
+      document.body.classList.remove("dark-theme");
+      localStorage.setItem("theme", "light");
+    }
   };
 
   return (
