@@ -1,5 +1,20 @@
 import React from "react";
 
+/**
+ * ProfileCard component displaying personal information and social media links
+ *
+ * Features:
+ * - Profile image with alt text for accessibility
+ * - Personal information (name, role)
+ * - Social media links with proper accessibility labels
+ * - Responsive design for different screen sizes
+ *
+ * @returns {JSX.Element} Profile card component
+ *
+ * @todo Replace placeholder image with actual profile photo
+ * @todo Update social media links with real URLs
+ * @todo Consider making profile data configurable via props
+ */
 function ProfileCard() {
   return (
     <div className="profile-card">

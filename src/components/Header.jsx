@@ -2,6 +2,18 @@ import React, { useState } from "react";
 import { Link, useLocation } from "react-router-dom";
 import ThemeToggle from "./ThemeToggle";
 
+/**
+ * Header component with navigation and mobile menu functionality
+ *
+ * Features:
+ * - Responsive navigation with desktop and mobile layouts
+ * - Active link highlighting based on current route
+ * - Hamburger menu for mobile devices
+ * - Integrated theme toggle button
+ * - Accessibility support with aria-labels
+ *
+ * @returns {JSX.Element} Header component with navigation
+ */
 function Header() {
   const location = useLocation();
   const [isMenuOpen, setIsMenuOpen] = useState(false);

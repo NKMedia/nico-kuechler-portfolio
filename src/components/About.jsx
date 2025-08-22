@@ -1,6 +1,20 @@
 import React from "react";
 import ProfileCard from "./ProfileCard";
 
+/**
+ * About component - Landing page displaying personal introduction
+ *
+ * Features:
+ * - Personal introduction and overview
+ * - ProfileCard integration for contact information
+ * - Call-to-action buttons for navigation
+ * - Responsive layout for different screen sizes
+ *
+ * @returns {JSX.Element} About page component
+ *
+ * @todo Connect navigation buttons to actual routing
+ * @todo Replace placeholder text with real content
+ */
 function About() {
   return (
     <div className="content">

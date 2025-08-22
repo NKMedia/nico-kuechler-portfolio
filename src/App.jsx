@@ -10,7 +10,10 @@ const Lebenslauf = lazy(() => import("./components/Lebenslauf"));
 const Projekte = lazy(() => import("./components/Projekte"));
 const Kontakt = lazy(() => import("./components/Kontakt"));
 
-// Loading component
+/**
+ * Loading component displayed while lazy-loaded components are being fetched
+ * @returns {JSX.Element} Loading indicator component
+ */
 const Loading = () => (
   <div className="content">
     <div
@@ -28,6 +31,17 @@ const Loading = () => (
   </div>
 );
 
+/**
+ * Main App component that handles routing and layout structure
+ *
+ * Features:
+ * - React Router for SPA navigation
+ * - Lazy loading of route components for performance
+ * - Consistent layout with Header and Footer
+ * - Loading fallback for better UX
+ *
+ * @returns {JSX.Element} The main application component
+ */
 function App() {
   return (
     <Router>
