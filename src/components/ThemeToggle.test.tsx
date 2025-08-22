@@ -85,7 +85,9 @@ describe("ThemeToggle", () => {
 
     render(<ThemeToggle />);
 
-    expect(document.body.classList.contains("dark-theme")).toBe(true);
+    // Since no saved theme, hook uses default 'light' theme initially
+    // System preference only applies on media query change events
+    expect(document.body.classList.contains("light-theme")).toBe(true);
   });
 
   it("has proper accessibility attributes", () => {

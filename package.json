@@ -3,6 +3,38 @@
   "private": false,
   "version": "1.0.0",
   "type": "module",
+  "description": "A modern, responsive portfolio website for Nico Küchler, Senior Software Developer & Media Designer, built with React, TypeScript, and Vite.",
+  "author": {
+    "name": "Nico Küchler",
+    "email": "mail@nico-kuechler.de",
+    "url": "https://nico-kuechler.de"
+  },
+  "license": "MIT",
+  "homepage": "https://nico-kuechler.de",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/nico-kuechler/portfolio.git"
+  },
+  "bugs": {
+    "url": "https://github.com/nico-kuechler/portfolio/issues"
+  },
+  "keywords": [
+    "portfolio",
+    "react",
+    "typescript",
+    "vite",
+    "responsive",
+    "pwa",
+    "frontend",
+    "developer",
+    "media-designer",
+    "cv",
+    "resume"
+  ],
+  "engines": {
+    "node": ">=18.0.0",
+    "npm": ">=8.0.0"
+  },
   "scripts": {
     "dev": "vite",
     "build": "vite build",

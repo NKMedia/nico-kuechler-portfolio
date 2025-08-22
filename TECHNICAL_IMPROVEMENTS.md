@@ -332,7 +332,7 @@ const { isDark, toggleTheme } = useTheme();
 // Form handling with validation
 const { values, errors, handleChange, handleSubmit } = useForm({
   initialValues: { name: "", email: "" },
-  validationRules: { email: ["required", "email"] }
+  validationRules: { email: ["required", "email"] },
 });
 ```
 

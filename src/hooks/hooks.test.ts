@@ -193,8 +193,10 @@ describe("Custom Hooks", () => {
       expect(result.current.hasErrors()).toBe(false); // No errors until validation is run
 
       // Manually trigger validation by calling isValid() which runs validation
-      const isValid = result.current.isValid();
-      expect(isValid).toBe(false);
+      act(() => {
+        const isValid = result.current.isValid();
+        expect(isValid).toBe(false);
+      });
     });
 
     it("should reset form", () => {
