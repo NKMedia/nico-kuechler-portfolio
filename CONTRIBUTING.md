@@ -30,14 +30,18 @@ By participating in this project, you agree to maintain a respectful and inclusi
 1. Fork the repository
 2. Clone your fork:
    ```bash
-   git clone https://github.com/your-username/portfolio-project.git
-   cd portfolio-project
+   git clone https://github.com/your-username/nico-kuechler-portfolio.git
+   cd nico-kuechler-portfolio
    ```
-3. Install dependencies:
+3. Copy environment variables:
+   ```bash
+   cp .env.example .env
+   ```
+4. Install dependencies:
    ```bash
    npm install
    ```
-4. Start the development server:
+5. Start the development server:
    ```bash
    npm run dev
    ```
@@ -138,10 +142,14 @@ export default ComponentName;
 
 ### Testing Requirements
 
-- Write unit tests for utility functions
+- Write unit tests for all new components and utilities
 - Add integration tests for critical user flows
-- Ensure accessibility compliance
+- Ensure minimum 80% test coverage
+- Test TypeScript types and interfaces
+- Verify accessibility compliance (ARIA labels, keyboard navigation)
 - Test responsive design on different screen sizes
+- Test theme toggle functionality
+- Verify error boundary behavior
 
 ### Running Tests
 
@@ -152,9 +160,22 @@ npm test
 # Run tests in watch mode
 npm run test:watch
 
+# Run tests with UI interface
+npm run test:ui
+
 # Generate coverage report
 npm run test:coverage
+
+# Run TypeScript type checking
+npm run type-check
 ```
+
+### Test File Naming
+
+- Component tests: `ComponentName.test.tsx`
+- Utility tests: `utilityName.test.ts`
+- Hook tests: `useHookName.test.ts`
+- Integration tests: `feature.integration.test.tsx`
 
 ## 📝 Pull Request Process
 

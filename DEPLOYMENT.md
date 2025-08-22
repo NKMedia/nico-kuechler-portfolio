@@ -169,21 +169,53 @@ firebase deploy
 
 ### Environment Variables
 
-Create `.env` files for different environments:
+The project uses environment variables for configuration. Copy `.env.example` to `.env` and configure:
 
-**.env.production:**
+**.env.example (template):**
 
 ```env
-VITE_API_URL=https://api.nicokuechlerportfolio.com
-VITE_CONTACT_EMAIL=nico@example.com
-VITE_ANALYTICS_ID=GA_MEASUREMENT_ID
+# App Configuration
+VITE_APP_NAME=Nico Küchler Portfolio
+VITE_APP_VERSION=1.0.0
+
+# Contact Information
+VITE_CONTACT_EMAIL=mail@nico-kuechler.de
+VITE_CONTACT_PHONE=+49 171 816 816 4
+VITE_CONTACT_LOCATION=Maisach (Gernlinden), Bayern
+
+# Social Media Links
+VITE_LINKEDIN_URL=https://linkedin.com/in/nico-kuechler
+VITE_GITHUB_URL=https://github.com/nico-kuechler
+VITE_XING_URL=https://xing.com/profile/nico-kuechler
+
+# Feature Flags
+VITE_ENABLE_CONTACT_FORM=true
+VITE_ENABLE_ANALYTICS=false
+VITE_ENABLE_PWA=false
+
+# Analytics (optional)
+# VITE_GA_TRACKING_ID=GA_MEASUREMENT_ID
+
+# API Endpoints (for future use)
+# VITE_API_BASE_URL=https://api.nico-kuechler.de
+# VITE_CONTACT_FORM_ENDPOINT=/api/contact
 ```
 
-**.env.development:**
+**.env.production (example):**
 
 ```env
-VITE_API_URL=http://localhost:3000
-VITE_CONTACT_EMAIL=dev@example.com
+VITE_APP_NAME=Nico Küchler Portfolio
+VITE_CONTACT_EMAIL=mail@nico-kuechler.de
+VITE_ENABLE_ANALYTICS=true
+VITE_GA_TRACKING_ID=GA_MEASUREMENT_ID
+```
+
+**.env.development (example):**
+
+```env
+VITE_APP_NAME=Nico Küchler Portfolio [DEV]
+VITE_CONTACT_EMAIL=dev@nico-kuechler.de
+VITE_ENABLE_ANALYTICS=false
 ```
 
 ### Router Configuration

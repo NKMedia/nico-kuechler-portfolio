@@ -13,31 +13,46 @@ A modern, responsive portfolio website built with React and Vite, showcasing the
 
 ## 🛠️ Technologies Used
 
-- **Frontend**: React 19.1.1, React Router DOM 7.8.1
+- **Frontend**: React 19.1.1, React Router DOM 7.8.1, TypeScript
 - **Build Tool**: Vite 7.1.2
+- **Testing**: Vitest, React Testing Library, Jest DOM
 - **Styling**: CSS3 with custom properties and Flexbox/Grid
-- **Code Quality**: ESLint with React hooks and refresh plugins
+- **Code Quality**: ESLint with TypeScript and React plugins
 - **Fonts**: Google Fonts (Montserrat)
 - **Icons**: Font Awesome (for theme toggle and social icons)
+- **Development**: Custom hooks, Environment variables, Performance monitoring
 
 ## 📁 Project Structure
 
 ```
 src/
-├── components/          # React components
-│   ├── About.jsx       # About/Home page component
-│   ├── Footer.jsx      # Footer component
-│   ├── Header.jsx      # Header with navigation
-│   ├── Kontakt.jsx     # Contact page component
-│   ├── Lebenslauf.jsx  # Resume/CV page component
-│   ├── ProfileCard.jsx # Profile card component
-│   ├── Projekte.jsx    # Projects page component
-│   └── ThemeToggle.jsx # Dark/light theme toggle
+├── components/          # React components with TypeScript
+│   ├── About.tsx       # About/Home page component
+│   ├── Footer.tsx      # Footer component
+│   ├── Header.tsx      # Header with navigation
+│   ├── Kontakt.tsx     # Contact page component
+│   ├── Lebenslauf.tsx  # Resume/CV page component
+│   ├── ProfileCard.tsx # Profile card component
+│   ├── Projekte.tsx    # Projects page component
+│   ├── ThemeToggle.tsx # Dark/light theme toggle
+│   ├── ErrorBoundary.tsx # Error boundary component
+│   ├── Datenschutz.tsx # Privacy policy component
+│   ├── Impressum.tsx   # Legal notice component
+│   └── NotFound.tsx    # 404 page component
+├── hooks/              # Custom React hooks
+│   ├── useTheme.ts     # Theme management hook
+│   ├── useLocalStorage.ts # Local storage hook
+│   ├── useForm.ts      # Form handling hook
+│   └── useFocus.ts     # Focus management hook
+├── constants/          # Application constants
+├── utils/              # Utility functions
+├── types/              # TypeScript type definitions
+├── test/               # Test configuration and utilities
 ├── assets/             # Static assets
-├── App.jsx            # Main application component
+├── App.tsx            # Main application component
 ├── App.css           # Global styles
 ├── index.css         # Base styles
-└── main.jsx          # Application entry point
+└── main.tsx          # Application entry point
 ```
 
 ## 🎯 Pages
@@ -59,32 +74,60 @@ src/
 1. Clone the repository:
 
 ```bash
-git clone [repository-url]
-cd NeuerTest
+git clone https://github.com/nico-kuechler/portfolio.git
+cd nico-kuechler-portfolio
 ```
 
-2. Install dependencies:
+2. Copy environment variables:
+
+```bash
+cp .env.example .env
+```
+
+3. Install dependencies:
 
 ```bash
 npm install
 ```
 
-3. Start the development server:
+4. Start the development server:
 
 ```bash
 npm run dev
 ```
 
-4. Open your browser and navigate to `http://localhost:5173`
+5. Open your browser and navigate to `http://localhost:5173`
 
 ## 📜 Available Scripts
 
 - `npm run dev` - Start development server
 - `npm run build` - Build for production
+- `npm run build:analyze` - Build with bundle analysis
+- `npm run build:prod` - Full production build with linting and tests
 - `npm run preview` - Preview production build locally
+- `npm run serve` - Serve production build on port 4173
 - `npm run lint` - Run ESLint for code quality checks
+- `npm run lint:fix` - Run ESLint and fix auto-fixable issues
+- `npm run type-check` - Run TypeScript type checking
+- `npm run test` - Run tests once
+- `npm run test:watch` - Run tests in watch mode
+- `npm run test:ui` - Run tests with UI interface
+- `npm run test:coverage` - Generate test coverage report
+- `npm run clean` - Clean build directory
 
 ## 🎨 Customization
+
+### Environment Variables
+
+Configuration can be updated via environment variables in `.env`:
+
+```env
+VITE_APP_NAME=Nico Küchler Portfolio
+VITE_CONTACT_EMAIL=mail@nico-kuechler.de
+VITE_CONTACT_PHONE=+49 171 816 816 4
+VITE_ENABLE_CONTACT_FORM=true
+VITE_ENABLE_ANALYTICS=false
+```
 
 ### Theme Colors
 
@@ -96,7 +139,7 @@ The main theme colors can be modified in `src/App.css`:
 
 ### Content Updates
 
-- Update personal information in `src/components/ProfileCard.jsx`
+- Update personal information via environment variables or `src/constants/index.ts`
 - Modify page content in respective component files
 - Replace placeholder images in `public/` and `src/assets/`
 
@@ -111,16 +154,27 @@ The main theme colors can be modified in `src/App.css`:
 
 The project uses modern React patterns including:
 
-- Functional components with hooks
+- Functional components with TypeScript and hooks
+- Custom hooks for theme management, localStorage, and form handling
+- Comprehensive test suite with Vitest and React Testing Library
+- Environment variable configuration for different deployments
+- Error boundaries for robust error handling
 - Lazy loading for better performance
 - Responsive design with CSS media queries
 - Accessibility considerations (ARIA labels, semantic HTML)
+- Performance monitoring and optimization utilities
 
 ## 🚀 Deployment
 
 ### Build for Production
 
 ```bash
+# Run full production build with tests and linting
+npm run build:prod
+
+# Or run individual steps
+npm run lint
+npm run test
 npm run build
 ```
 
