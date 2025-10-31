@@ -49,7 +49,14 @@ export const measurement = {
    */
   mark: (name: string): void => {
     if ("performance" in globalThis && globalThis.performance.mark) {
-      globalThis.performance.mark(`${name}-start`);
+      try {
+        globalThis.performance.mark(`${name}-start`);
+      } catch (error) {
+        console.warn(
+          `Failed to create performance mark '${name}-start':`,
+          error
+        );
+      }
     }
   },
 
@@ -63,14 +70,29 @@ export const measurement = {
       const startMark = `${name}-start`;
       const endMark = `${name}-end`;
 
-      globalThis.performance.mark(endMark);
-      globalThis.performance.measure(name, startMark, endMark);
+      try {
+        // Check if start mark exists
+        const startMarks = globalThis.performance.getEntriesByName(
+          startMark,
+          "mark"
+        );
+        if (startMarks.length === 0) {
+          console.warn(`Performance mark '${startMark}' not found`);
+          return 0;
+        }
 
-      const measure = globalThis.performance.getEntriesByName(
-        name,
-        "measure"
-      )[0];
-      return measure ? measure.duration : 0;
+        globalThis.performance.mark(endMark);
+        globalThis.performance.measure(name, startMark, endMark);
+
+        const measure = globalThis.performance.getEntriesByName(
+          name,
+          "measure"
+        )[0];
+        return measure ? measure.duration : 0;
+      } catch (error) {
+        console.warn(`Failed to measure performance for '${name}':`, error);
+        return 0;
+      }
     }
     return 0;
   },
@@ -116,7 +138,7 @@ export const webVitals = {
    * @param {(metric: WebVitalMetric) => void} callback - Callback for metric
    */
   measureLCP: (callback: (metric: WebVitalMetric) => void): void => {
-    if ("PerformanceObserver" in window) {
+    if ("PerformanceObserver" in globalThis) {
       const observer = new PerformanceObserver((list) => {
         const entries = list.getEntries();
         const lastEntry = entries[entries.length - 1] as PerformanceEntry & {
@@ -149,10 +171,10 @@ export const webVitals = {
    * @param {(metric: WebVitalMetric) => void} callback - Callback for metric
    */
   measureFID: (callback: (metric: WebVitalMetric) => void): void => {
-    if ("PerformanceObserver" in window) {
+    if ("PerformanceObserver" in globalThis) {
       const observer = new PerformanceObserver((list) => {
         const entries = list.getEntries();
-        entries.forEach((entry) => {
+        for (const entry of entries) {
           const fidEntry = entry as PerformanceEntry & {
             processingStart?: number;
           };
@@ -170,7 +192,7 @@ export const webVitals = {
               entries: [entry],
             });
           }
-        });
+        }
       });
 
       observer.observe({ entryTypes: ["first-input"] });
@@ -182,13 +204,13 @@ export const webVitals = {
    * @param {(metric: WebVitalMetric) => void} callback - Callback for metric
    */
   measureCLS: (callback: (metric: WebVitalMetric) => void): void => {
-    if ("PerformanceObserver" in window) {
+    if ("PerformanceObserver" in globalThis) {
       let clsValue = 0;
       const clsEntries: PerformanceEntry[] = [];
 
       const observer = new PerformanceObserver((list) => {
         const entries = list.getEntries();
-        entries.forEach((entry) => {
+        for (const entry of entries) {
           const layoutShiftEntry = entry as PerformanceEntry & {
             value?: number;
             hadRecentInput?: boolean;
@@ -209,7 +231,7 @@ export const webVitals = {
               entries: clsEntries,
             });
           }
-        });
+        }
       });
 
       observer.observe({ entryTypes: ["layout-shift"] });
@@ -237,7 +259,7 @@ export const analytics = {
     // For example, sending to Google Analytics, Matomo, etc.
     try {
       // Dispatch custom event for other parts of the app to listen to
-      window.dispatchEvent(
+      globalThis.dispatchEvent(
         new CustomEvent("analytics-event", {
           detail: event,
         })
@@ -328,9 +350,9 @@ export const monitoring = {
    * Track resource loading performance
    */
   trackResourcePerformance: (): void => {
-    if ("PerformanceObserver" in window) {
+    if ("PerformanceObserver" in globalThis) {
       const observer = new PerformanceObserver((list) => {
-        list.getEntries().forEach((entry) => {
+        for (const entry of list.getEntries()) {
           const resourceEntry = entry as PerformanceResourceTiming;
 
           // Track slow resources (>1s)
@@ -342,7 +364,7 @@ export const monitoring = {
               value: Math.round(resourceEntry.duration),
             });
           }
-        });
+        }
       });
 
       observer.observe({ entryTypes: ["resource"] });
@@ -353,16 +375,16 @@ export const monitoring = {
    * Track long tasks that block the main thread
    */
   trackLongTasks: (): void => {
-    if ("PerformanceObserver" in window) {
+    if ("PerformanceObserver" in globalThis) {
       const observer = new PerformanceObserver((list) => {
-        list.getEntries().forEach((entry) => {
+        for (const entry of list.getEntries()) {
           analytics.trackEvent({
             category: "Performance",
             action: "long_task",
             label: "main_thread_blocked",
             value: Math.round(entry.duration),
           });
-        });
+        }
       });
 
       try {
@@ -381,7 +403,7 @@ export const monitoring = {
   generateReport: (): Partial<DetailedPerformanceReport> => {
     return {
       timestamp: new Date().toISOString(),
-      url: window.location.href,
+      url: globalThis.location.href,
       userAgent: navigator.userAgent,
       connection:
         (
