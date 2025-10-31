@@ -323,8 +323,6 @@ export const monitoring = {
   initialize: (config: PerformanceConfig = {}): void => {
     if (!FEATURES.analytics) return;
 
-    console.warn("Initializing performance monitoring...");
-
     // Measure navigation timing
     measurement.mark("app-initialization");
 
@@ -426,22 +424,43 @@ export const monitoring = {
 export const initializePerformanceMonitoring = (
   config: PerformanceConfig = {}
 ): void => {
+  // Store the initialization start time as fallback
+  const initStartTime = performance.now();
+
   monitoring.initialize(config);
 
-  // Mark app as fully initialized
-  document.addEventListener("DOMContentLoaded", () => {
-    const duration = measurement.measure("app-initialization");
-    const rating = getPerformanceRating(duration, {
-      poor: 3000,
-      needsImprovement: 1500,
+  // Function to complete the initialization measurement
+  const completeInitialization = () => {
+    // Try the mark-based measurement first
+    let duration = measurement.measure("app-initialization");
+
+    // If mark-based measurement failed, fall back to time-based measurement
+    if (duration === 0) {
+      duration = performance.now() - initStartTime;
+    }
+
+    if (duration > 0) {
+      const rating = getPerformanceRating(duration, {
+        poor: 3000,
+        needsImprovement: 1500,
+      });
+      analytics.trackPerformance({
+        name: "App Initialization",
+        value: duration,
+        rating,
+        entries: [],
+      });
+    }
+  }; // Mark app as fully initialized
+  if (document.readyState === "loading") {
+    // DOM is still loading, wait for DOMContentLoaded
+    document.addEventListener("DOMContentLoaded", completeInitialization, {
+      once: true,
     });
-    analytics.trackPerformance({
-      name: "App Initialization",
-      value: duration,
-      rating,
-      entries: [],
-    });
-  });
+  } else {
+    // DOM is already loaded, complete initialization immediately
+    setTimeout(completeInitialization, 0);
+  }
 };
 
 // Export performance utilities as default
