@@ -1,9 +1,10 @@
-import React, { Suspense, lazy } from "react";
+import React, { Suspense, lazy, useEffect } from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Header from "./components/Header";
 import Footer from "./components/Footer";
 import ErrorBoundary from "./components/ErrorBoundary";
 import SkipLinks from "./components/SkipLinks";
+import { initializePWA } from "./utils/pwa";
 import "./App.css";
 
 // Lazy loading for better performance
@@ -49,6 +50,11 @@ const Loading: React.FC = () => (
  * @returns {JSX.Element} The main application component
  */
 const App: React.FC = () => {
+  // Initialize PWA functionality on app startup
+  useEffect(() => {
+    initializePWA();
+  }, []);
+
   return (
     <ErrorBoundary>
       <Router>

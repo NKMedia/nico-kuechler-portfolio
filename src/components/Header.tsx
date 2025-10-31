@@ -3,6 +3,7 @@ import { useLocation } from "react-router-dom";
 import { useFocusTrap } from "../hooks";
 import ThemeToggle from "./ThemeToggle";
 import NavigationLink from "./NavigationLink";
+import PWAInstallButton from "./PWAInstallButton";
 
 /**
  * Header component with navigation and mobile menu functionality
@@ -81,6 +82,7 @@ function Header(): React.ReactElement {
             KONTAKT
           </NavigationLink>
         </nav>
+        <PWAInstallButton className="header-pwa-install" />
         <ThemeToggle />
         <button
           className={`hamburger ${isMenuOpen ? "active" : ""}`}
@@ -124,6 +126,9 @@ function Header(): React.ReactElement {
         >
           KONTAKT
         </NavigationLink>
+        <div className="mobile-nav-footer">
+          <PWAInstallButton className="mobile-pwa-install" />
+        </div>
       </nav>
     </header>
   );

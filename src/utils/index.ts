@@ -14,6 +14,10 @@ import type {
 } from "../types";
 import { FORM_CONFIG, ERROR_MESSAGES } from "../constants";
 
+// Re-export PWA utilities
+export * from "./pwa";
+export * from "./serviceWorker";
+
 /**
  * Form validation utilities
  */
@@ -187,11 +191,11 @@ export const storage = {
  */
 export const navigation = {
   /**
-   * Get current route path
+   * Get current URL path
    * @returns {string} - Current path
    */
   getCurrentPath: (): string => {
-    return window.location.pathname;
+    return globalThis.location.pathname;
   },
 
   /**
@@ -229,7 +233,7 @@ export const navigation = {
    * @param {string} url - URL to navigate to
    */
   navigateToUrl: (url: string): void => {
-    window.location.href = url;
+    globalThis.location.href = url;
   },
 };
 
@@ -477,9 +481,9 @@ export const device = {
       case "serviceWorker":
         return "serviceWorker" in navigator;
       case "localStorage":
-        return "localStorage" in window;
+        return "localStorage" in globalThis;
       case "notifications":
-        return "Notification" in window;
+        return "Notification" in globalThis;
       case "geolocation":
         return "geolocation" in navigator;
       default:

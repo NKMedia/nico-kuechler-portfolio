@@ -3,13 +3,24 @@
   "short_name": "NK Portfolio",
   "description": "Portfolio von Nico Küchler - Senior Software Developer & Media Designer",
   "theme_color": "#2563eb",
-  "background_color": "#e7dbce",
+  "background_color": "#ffffff",
   "display": "standalone",
   "orientation": "portrait-primary",
   "scope": "/",
-  "start_url": "/",
+  "start_url": "/?utm_source=pwa",
   "lang": "de",
+  "id": "nico-kuechler-portfolio",
   "categories": ["business", "portfolio", "technology"],
+  "prefer_related_applications": false,
+  "edge_side_panel": {
+    "preferred_width": 480
+  },
+  "protocol_handlers": [
+    {
+      "protocol": "mailto",
+      "url": "/kontakt?email=%s"
+    }
+  ],
   "icons": [
     {
       "src": "/nklogo.webp",

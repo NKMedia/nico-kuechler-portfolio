@@ -39,8 +39,10 @@ export const isServiceWorkerSupported = (): boolean => {
  * @returns {Promise<RegistrationResult>} - Registration result
  */
 export const registerServiceWorker = async (
-  config: ServiceWorkerConfig = { swPath: "/sw.js" }
+  config?: ServiceWorkerConfig
 ): Promise<RegistrationResult> => {
+  const swConfig = config ?? { swPath: "/sw.js" };
+
   if (!isServiceWorkerSupported()) {
     return {
       success: false,
@@ -49,17 +51,20 @@ export const registerServiceWorker = async (
   }
 
   try {
-    const registration = await navigator.serviceWorker.register(config.swPath, {
-      scope: config.scope || "/",
-    });
+    const registration = await navigator.serviceWorker.register(
+      swConfig.swPath,
+      {
+        scope: swConfig.scope || "/",
+      }
+    );
 
     console.warn("Service Worker registered successfully:", registration);
 
     // Set up update checking if interval is provided
-    if (config.updateCheckInterval) {
+    if (swConfig.updateCheckInterval) {
       setInterval(() => {
         registration.update();
-      }, config.updateCheckInterval);
+      }, swConfig.updateCheckInterval);
     }
 
     // Listen for updates
@@ -74,7 +79,7 @@ export const registerServiceWorker = async (
           ) {
             console.warn("New service worker installed, refresh required");
             // Dispatch custom event for UI to handle
-            window.dispatchEvent(
+            globalThis.dispatchEvent(
               new CustomEvent("sw-update-available", {
                 detail: { registration },
               })

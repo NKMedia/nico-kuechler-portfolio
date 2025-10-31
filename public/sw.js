@@ -2,31 +2,33 @@
  * Service Worker for Portfolio Website
  *
  * Features:
+ * - Stale-while-revalidate caching for optimal performance
  * - Cache static assets for offline availability
- * - Cache API responses with network-first strategy
  * - Background sync for contact form submissions
+ * - PWA installation support
  * - Push notification support (future use)
  */
 
-const CACHE_NAME = "nico-kuechler-portfolio-v1";
-const STATIC_CACHE_NAME = "static-v1";
-const DYNAMIC_CACHE_NAME = "dynamic-v1";
+const CACHE_VERSION = "v2";
+const STATIC_CACHE_NAME = `nico-portfolio-static-${CACHE_VERSION}`;
+const DYNAMIC_CACHE_NAME = `nico-portfolio-dynamic-${CACHE_VERSION}`;
+const RUNTIME_CACHE_NAME = `nico-portfolio-runtime-${CACHE_VERSION}`;
+
+// Cache duration for stale-while-revalidate (24 hours)
+const CACHE_MAX_AGE = 24 * 60 * 60 * 1000;
 
 // Assets to cache immediately
 const STATIC_ASSETS = [
   "/",
   "/index.html",
-  "/src/main.jsx",
-  "/src/App.jsx",
-  "/src/App.css",
-  "/src/index.css",
+  "/site.webmanifest",
   "/nklogo.webp",
   "/favicon.ico",
-  // Add other critical assets
+  // Add other critical assets when they exist
 ];
 
 // Install event - cache static assets
-self.addEventListener("install", (event) => {
+globalThis.addEventListener("install", (event) => {
   console.log("Service Worker: Installing...");
 
   event.waitUntil(
@@ -38,7 +40,7 @@ self.addEventListener("install", (event) => {
       })
       .then(() => {
         console.log("Service Worker: Static assets cached");
-        return self.skipWaiting();
+        return globalThis.skipWaiting();
       })
       .catch((error) => {
         console.error("Service Worker: Error caching static assets", error);
@@ -47,7 +49,7 @@ self.addEventListener("install", (event) => {
 });
 
 // Activate event - clean up old caches
-self.addEventListener("activate", (event) => {
+globalThis.addEventListener("activate", (event) => {
   console.log("Service Worker: Activating...");
 
   event.waitUntil(
@@ -58,7 +60,8 @@ self.addEventListener("activate", (event) => {
           cacheNames.map((cacheName) => {
             if (
               cacheName !== STATIC_CACHE_NAME &&
-              cacheName !== DYNAMIC_CACHE_NAME
+              cacheName !== DYNAMIC_CACHE_NAME &&
+              cacheName !== RUNTIME_CACHE_NAME
             ) {
               console.log("Service Worker: Deleting old cache", cacheName);
               return caches.delete(cacheName);
@@ -68,78 +71,131 @@ self.addEventListener("activate", (event) => {
       })
       .then(() => {
         console.log("Service Worker: Activated");
-        return self.clients.claim();
+        return globalThis.clients.claim();
       })
   );
 });
 
-// Fetch event - handle network requests
-self.addEventListener("fetch", (event) => {
+// Fetch event - handle network requests with stale-while-revalidate
+globalThis.addEventListener("fetch", (event) => {
   const { request } = event;
   const url = new URL(request.url);
 
-  // Skip cross-origin requests
-  if (url.origin !== location.origin) {
+  // Skip cross-origin requests and non-GET requests
+  if (url.origin !== location.origin || request.method !== "GET") {
     return;
   }
 
-  // Handle different request types
+  // Handle different request types with stale-while-revalidate
   if (request.destination === "document") {
-    // HTML pages - Network first, fallback to cache
-    event.respondWith(networkFirstThenCache(request));
-  } else if (request.destination === "image") {
-    // Images - Cache first, fallback to network
-    event.respondWith(cacheFirstThenNetwork(request));
+    // HTML pages - Stale while revalidate with network fallback
+    event.respondWith(staleWhileRevalidate(request, DYNAMIC_CACHE_NAME));
+  } else if (
+    request.destination === "script" ||
+    request.destination === "style" ||
+    request.destination === "image" ||
+    request.destination === "font"
+  ) {
+    // Static assets - Stale while revalidate
+    event.respondWith(staleWhileRevalidate(request, RUNTIME_CACHE_NAME));
   } else {
-    // Other assets - Cache first, fallback to network
-    event.respondWith(cacheFirstThenNetwork(request));
+    // Other requests - Cache first approach
+    event.respondWith(cacheFirst(request, DYNAMIC_CACHE_NAME));
   }
 });
 
 /**
- * Network first, then cache strategy
- * Good for dynamic content like HTML pages
+ * Stale-while-revalidate strategy
+ * Serves from cache immediately, then updates cache in background
  */
-async function networkFirstThenCache(request) {
-  try {
-    const networkResponse = await fetch(request);
+async function staleWhileRevalidate(request, cacheName) {
+  const cache = await caches.open(cacheName);
+  const cachedResponse = await cache.match(request);
 
-    if (networkResponse.ok) {
-      const cache = await caches.open(DYNAMIC_CACHE_NAME);
-      cache.put(request, networkResponse.clone());
-    }
+  // Always try to fetch fresh content in background
+  const fetchPromise = fetch(request)
+    .then((response) => {
+      if (response.ok) {
+        // Clone and cache the response
+        cache.put(request, response.clone());
+      }
+      return response;
+    })
+    .catch((error) => {
+      console.log("Service Worker: Fetch failed", error);
+      return null;
+    });
 
-    return networkResponse;
-  } catch (error) {
-    console.log("Service Worker: Network failed, trying cache", error);
-    const cachedResponse = await caches.match(request);
+  // If we have cached content, return it immediately
+  if (cachedResponse) {
+    // Check if cache is still fresh
+    const cacheDate = new Date(cachedResponse.headers.get("date") || 0);
+    const now = new Date();
+    const isStale = now.getTime() - cacheDate.getTime() > CACHE_MAX_AGE;
 
-    if (cachedResponse) {
+    if (!isStale) {
+      // Cache is fresh, just update in background
+      fetchPromise.catch(() => {}); // Ignore background fetch errors
       return cachedResponse;
     }
 
-    // Return offline page or default response
-    if (request.destination === "document") {
-      const offlineResponse = await caches.match("/");
-      return (
-        offlineResponse ||
-        new Response(
-          "<h1>Offline</h1><p>Diese Seite ist offline nicht verfügbar.</p>",
-          { headers: { "Content-Type": "text/html" } }
-        )
-      );
-    }
-
-    throw error;
+    // Cache is stale, but return it while we fetch fresh content
+    const freshResponse = await fetchPromise;
+    return freshResponse || cachedResponse;
   }
+
+  // No cached content, wait for network
+  const freshResponse = await fetchPromise;
+  if (freshResponse) {
+    return freshResponse;
+  }
+
+  // Network failed and no cache, return offline response for documents
+  if (request.destination === "document") {
+    return new Response(
+      `
+      <!DOCTYPE html>
+      <html lang="de">
+        <head>
+          <meta charset="UTF-8">
+          <meta name="viewport" content="width=device-width, initial-scale=1.0">
+          <title>Offline - Nico Küchler Portfolio</title>
+          <style>
+            body { font-family: Arial, sans-serif; text-align: center; padding: 2rem; background: #f5f5f5; }
+            .container { max-width: 500px; margin: 0 auto; background: white; padding: 2rem; border-radius: 8px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
+            h1 { color: #2563eb; }
+            .retry-btn { background: #2563eb; color: white; border: none; padding: 1rem 2rem; border-radius: 4px; cursor: pointer; font-size: 1rem; }
+            .retry-btn:hover { background: #1d4ed8; }
+          </style>
+        </head>
+        <body>
+          <div class="container">
+            <h1>Offline</h1>
+            <p>Diese Seite ist momentan nicht verfügbar. Bitte überprüfen Sie Ihre Internetverbindung.</p>
+            <button class="retry-btn" onclick="window.location.reload()">Erneut versuchen</button>
+          </div>
+        </body>
+      </html>
+      `,
+      {
+        headers: {
+          "Content-Type": "text/html",
+          "Cache-Control": "no-cache",
+        },
+      }
+    );
+  }
+
+  throw new Error("Network failed and no cache available");
 }
 
 /**
- * Cache first, then network strategy
- * Good for static assets like images, CSS, JS
+ * Cache first strategy
+ * Good for API calls and other dynamic content
  */
-async function cacheFirstThenNetwork(request) {
-  const cachedResponse = await caches.match(request);
+async function cacheFirst(request, cacheName) {
+  const cache = await caches.open(cacheName);
+  const cachedResponse = await cache.match(request);
 
   if (cachedResponse) {
     return cachedResponse;
@@ -147,21 +203,18 @@ async function cacheFirstThenNetwork(request) {
 
   try {
     const networkResponse = await fetch(request);
-
     if (networkResponse.ok) {
-      const cache = await caches.open(DYNAMIC_CACHE_NAME);
       cache.put(request, networkResponse.clone());
     }
-
     return networkResponse;
   } catch (error) {
-    console.error("Service Worker: Failed to fetch", request.url, error);
+    console.error("Service Worker: Cache first failed", error);
     throw error;
   }
 }
 
 // Background sync for contact form submissions
-self.addEventListener("sync", (event) => {
+globalThis.addEventListener("sync", (event) => {
   console.log("Service Worker: Background sync triggered", event.tag);
 
   if (event.tag === "contact-form-sync") {
@@ -214,7 +267,7 @@ async function removePendingSubmission(id) {
 }
 
 // Push notification handling (for future use)
-self.addEventListener("push", (event) => {
+globalThis.addEventListener("push", (event) => {
   console.log("Service Worker: Push notification received", event);
 
   const options = {
@@ -237,12 +290,12 @@ self.addEventListener("push", (event) => {
   };
 
   event.waitUntil(
-    self.registration.showNotification("Nico Küchler Portfolio", options)
+    globalThis.registration.showNotification("Nico Küchler Portfolio", options)
   );
 });
 
 // Handle notification clicks
-self.addEventListener("notificationclick", (event) => {
+globalThis.addEventListener("notificationclick", (event) => {
   event.notification.close();
 
   if (event.action === "view") {
