@@ -13,6 +13,7 @@ const Projekte = lazy(() => import("./components/Projekte"));
 const Kontakt = lazy(() => import("./components/Kontakt"));
 const Impressum = lazy(() => import("./components/Impressum"));
 const Datenschutz = lazy(() => import("./components/Datenschutz"));
+const Barrierefreiheit = lazy(() => import("./components/Barrierefreiheit"));
 const NotFound = lazy(() => import("./components/NotFound"));
 
 /**
@@ -63,6 +64,10 @@ const App: React.FC = () => {
                 <Route path="/kontakt" element={<Kontakt />} />
                 <Route path="/impressum" element={<Impressum />} />
                 <Route path="/datenschutz" element={<Datenschutz />} />
+                <Route
+                  path="/barrierefreiheit"
+                  element={<Barrierefreiheit />}
+                />
                 <Route path="*" element={<NotFound />} />
               </Routes>
             </Suspense>

@@ -30,12 +30,12 @@ function Kontakt(): React.ReactElement {
     };
 
     if (!validationResult.isValid) {
-      validationResult.errors.forEach((error) => {
+      for (const error of validationResult.errors) {
         if (error.includes("Name")) errors.name = error;
         else if (error.includes("E-Mail")) errors.email = error;
         else if (error.includes("Betreff")) errors.subject = error;
         else if (error.includes("Nachricht")) errors.message = error;
-      });
+      }
     }
 
     return errors;

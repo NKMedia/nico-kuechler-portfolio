@@ -143,18 +143,18 @@ describe("Footer", () => {
       screen.getByLabelText("GitHub"),
     ];
 
-    externalLinks.forEach((link) => {
+    for (const link of externalLinks) {
       expect(link).toHaveAttribute("target", "_blank");
       expect(link).toHaveAttribute("rel", "noopener noreferrer");
-    });
+    }
   });
 
   it("contains all expected contact methods", () => {
     render(<Footer />);
 
     const links = screen.getAllByRole("link");
-    // 2 legal links + 3 social links = 5 total links
-    expect(links).toHaveLength(5);
+    // 3 legal links + 3 social links = 6 total links (added Barrierefreiheit link)
+    expect(links).toHaveLength(6);
   });
 
   it("displays contact information in the right section", () => {

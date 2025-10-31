@@ -15,6 +15,9 @@ function Footer(): React.ReactElement {
         <Link to="/datenschutz" className="footer-link">
           Datenschutz
         </Link>
+        <Link to="/barrierefreiheit" className="footer-link">
+          Barrierefreiheit
+        </Link>
         <div className="footer-copyright">
           © 2025 Nico Küchler Mediendesign.
         </div>
