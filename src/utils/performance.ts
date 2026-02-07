@@ -32,7 +32,7 @@ export interface WebVitalMetric {
 // Helper function to determine performance rating
 const getPerformanceRating = (
   value: number,
-  thresholds: { poor: number; needsImprovement: number }
+  thresholds: { poor: number; needsImprovement: number },
 ): "good" | "needs-improvement" | "poor" => {
   if (value > thresholds.poor) return "poor";
   if (value > thresholds.needsImprovement) return "needs-improvement";
@@ -54,7 +54,7 @@ export const measurement = {
       } catch (error) {
         console.warn(
           `Failed to create performance mark '${name}-start':`,
-          error
+          error,
         );
       }
     }
@@ -71,13 +71,13 @@ export const measurement = {
       const endMark = `${name}-end`;
 
       try {
-        // Check if start mark exists
+        // Check if start mark exists - silently return 0 if not found
         const startMarks = globalThis.performance.getEntriesByName(
           startMark,
-          "mark"
+          "mark",
         );
         if (startMarks.length === 0) {
-          console.warn(`Performance mark '${startMark}' not found`);
+          // Start mark not found - this is expected when analytics is disabled
           return 0;
         }
 
@@ -86,7 +86,7 @@ export const measurement = {
 
         const measure = globalThis.performance.getEntriesByName(
           name,
-          "measure"
+          "measure",
         )[0];
         return measure ? measure.duration : 0;
       } catch (error) {
@@ -262,7 +262,7 @@ export const analytics = {
       globalThis.dispatchEvent(
         new CustomEvent("analytics-event", {
           detail: event,
-        })
+        }),
       );
     } catch (error) {
       console.error("Failed to track analytics event:", error);
@@ -422,7 +422,7 @@ export const monitoring = {
  * @param {PerformanceConfig} config - Configuration options
  */
 export const initializePerformanceMonitoring = (
-  config: PerformanceConfig = {}
+  config: PerformanceConfig = {},
 ): void => {
   // Store the initialization start time as fallback
   const initStartTime = performance.now();
