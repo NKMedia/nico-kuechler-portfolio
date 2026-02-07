@@ -51,12 +51,12 @@ export function initializePWA(): void {
 
   // Check if app is already installed using multiple methods
   const isStandalone = globalThis.matchMedia(
-    "(display-mode: standalone)"
+    "(display-mode: standalone)",
   ).matches;
   const isWebAppCapable =
     (navigator as { standalone?: boolean }).standalone === true; // iOS Safari standalone
   const isMinimalUI = globalThis.matchMedia(
-    "(display-mode: minimal-ui)"
+    "(display-mode: minimal-ui)",
   ).matches;
 
   if (isStandalone || isWebAppCapable || isMinimalUI) {
@@ -73,7 +73,7 @@ export function initializePWA(): void {
       globalThis.dispatchEvent(
         new CustomEvent("pwa-installable", {
           detail: installState,
-        })
+        }),
       );
     }, 1000); // Small delay to ensure components are ready
   }
@@ -91,7 +91,7 @@ export function initializePWA(): void {
     globalThis.dispatchEvent(
       new CustomEvent("pwa-installable", {
         detail: installState,
-      })
+      }),
     );
   });
 
@@ -105,7 +105,7 @@ export function initializePWA(): void {
     globalThis.dispatchEvent(
       new CustomEvent("pwa-installed", {
         detail: installState,
-      })
+      }),
     );
   });
 }
@@ -173,7 +173,7 @@ export function isInstallable(): boolean {
   const isIOSDevice = /iphone|ipad|ipod/i.test(navigator.userAgent);
   const hasManifest = document.querySelector('link[rel="manifest"]') !== null;
   const isStandalone = globalThis.matchMedia(
-    "(display-mode: standalone)"
+    "(display-mode: standalone)",
   ).matches;
   const isWebAppCapable =
     (navigator as { standalone?: boolean }).standalone === true;
@@ -199,9 +199,10 @@ export function isApplePWAReady(): boolean {
   const hasManifest = document.querySelector('link[rel="manifest"]') !== null;
   const hasAppleTouchIcon =
     document.querySelector('link[rel="apple-touch-icon"]') !== null;
-  const hasAppleWebAppCapable =
+  const hasWebAppCapable =
+    document.querySelector('meta[name="mobile-web-app-capable"]') !== null ||
     document.querySelector('meta[name="apple-mobile-web-app-capable"]') !==
-    null;
+      null;
   const hasServiceWorker = "serviceWorker" in navigator;
   const isHTTPS =
     location.protocol === "https:" || location.hostname === "localhost";
@@ -209,7 +210,7 @@ export function isApplePWAReady(): boolean {
   return (
     hasManifest &&
     hasAppleTouchIcon &&
-    hasAppleWebAppCapable &&
+    hasWebAppCapable &&
     hasServiceWorker &&
     isHTTPS
   );
@@ -334,7 +335,7 @@ export function getInstallInstructions(): {
  */
 export function trackPWAEvent(
   event: string,
-  data?: Record<string, string | number | boolean>
+  data?: Record<string, string | number | boolean>,
 ): void {
   // Example: Send to Google Analytics, Plausible, etc.
   const gtagFunction = (
@@ -342,7 +343,7 @@ export function trackPWAEvent(
       gtag?: (
         type: string,
         event: string,
-        params: Record<string, unknown>
+        params: Record<string, unknown>,
       ) => void;
     }
   ).gtag;
