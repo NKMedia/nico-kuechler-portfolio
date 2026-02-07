@@ -26,7 +26,7 @@ describe("Footer", () => {
   it("displays copyright text", () => {
     render(<Footer />);
 
-    const copyrightText = screen.getByText("© 2025 Nico Küchler Mediendesign.");
+    const copyrightText = screen.getByText("© 2026 Nico Küchler Mediendesign.");
     expect(copyrightText).toBeInTheDocument();
   });
 
@@ -59,7 +59,7 @@ describe("Footer", () => {
     expect(linkedinLink).toBeInTheDocument();
     expect(linkedinLink).toHaveAttribute(
       "href",
-      "https://www.linkedin.com/in/nico-kuechler-9337a762/"
+      "https://www.linkedin.com/in/nico-kuechler-9337a762/",
     );
     expect(linkedinLink).toHaveAttribute("target", "_blank");
     expect(linkedinLink).toHaveAttribute("rel", "noopener noreferrer");
@@ -120,7 +120,7 @@ describe("Footer", () => {
     const copyrightElement = document.querySelector(".footer-copyright");
     expect(copyrightElement).toBeInTheDocument();
     expect(copyrightElement).toHaveTextContent(
-      "© 2025 Nico Küchler Mediendesign."
+      "© 2026 Nico Küchler Mediendesign.",
     );
   });
 

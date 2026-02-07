@@ -19,7 +19,7 @@ function Footer(): React.ReactElement {
           Barrierefreiheit
         </Link>
         <div className="footer-copyright">
-          © 2025 Nico Küchler Mediendesign.
+          © 2026 Nico Küchler Mediendesign.
         </div>
       </div>
       <div className="footer-right">
