@@ -1,7 +1,44 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="de">
   <head>
     <meta charset="UTF-8" />
+    <!-- Google Analytics 4 - Loaded after user consent -->
+    <script>
+      // GA4 initialization - waits for consent
+      globalThis.dataLayer = globalThis.dataLayer || [];
+      function gtag() {
+        dataLayer.push(arguments);
+      }
+      gtag("js", new Date());
+      gtag("consent", "default", {
+        analytics_storage: "denied",
+        ad_storage: "denied",
+        wait_for_update: 500,
+      });
+      gtag("config", "G-GS1PXKRQ8D", {
+        anonymize_ip: true,
+        cookie_flags: "SameSite=None;Secure",
+      });
+
+      // Function to load GA4 script after consent
+      globalThis.loadGA4 = function () {
+        if (document.getElementById("ga4-script")) return;
+        var script = document.createElement("script");
+        script.id = "ga4-script";
+        script.async = true;
+        script.src = "https://www.googletagmanager.com/gtag/js?id=G-GS1PXKRQ8D";
+        document.head.appendChild(script);
+        gtag("consent", "update", {
+          analytics_storage: "granted",
+        });
+      };
+    </script>
+
+    <!-- Security Headers -->
+    <meta
+      http-equiv="Content-Security-Policy"
+      content="default-src 'self'; script-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://cdnjs.cloudflare.com https://www.googletagmanager.com https://www.google-analytics.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://cdnjs.cloudflare.com; font-src 'self' https://fonts.gstatic.com https://cdnjs.cloudflare.com; img-src 'self' data: https:; connect-src 'self' https://www.google-analytics.com https://analytics.google.com https://www.googletagmanager.com; frame-ancestors 'none'; base-uri 'self'; form-action 'self'"
+    />
 
     <!-- Primary Meta Tags -->
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />

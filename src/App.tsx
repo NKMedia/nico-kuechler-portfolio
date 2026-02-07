@@ -4,6 +4,7 @@ import Header from "./components/Header";
 import Footer from "./components/Footer";
 import ErrorBoundary from "./components/ErrorBoundary";
 import SkipLinks from "./components/SkipLinks";
+import CookieConsent from "./components/CookieConsent";
 import { initializePWA } from "./utils/pwa";
 import "./App.css";
 
@@ -79,6 +80,7 @@ const App: React.FC = () => {
             </Suspense>
           </main>
           <Footer />
+          <CookieConsent />
         </div>
       </Router>
     </ErrorBoundary>

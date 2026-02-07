@@ -94,10 +94,23 @@ function Datenschutz(): React.ReactElement {
         <div className="cv-section">
           <h4>5. Cookies</h4>
           <p>
-            Diese Website verwendet derzeit keine Cookies zur Speicherung von
-            Benutzerdaten. Sollten in Zukunft Cookies eingesetzt werden, werden
-            Sie entsprechend informiert und um Ihre Einwilligung gebeten.
+            Diese Website verwendet Cookies für die Webanalyse mit Google
+            Analytics 4. Diese Cookies werden nur gesetzt, wenn Sie dem über
+            unseren Cookie-Banner aktiv zugestimmt haben. Sie können Ihre
+            Einwilligung jederzeit widerrufen, indem Sie die Cookies in Ihrem
+            Browser löschen.
           </p>
+          <p>
+            <strong>Verwendete Cookies:</strong>
+          </p>
+          <ul className="cv-certifications">
+            <li>
+              <strong>_ga:</strong> Unterscheidung von Nutzern (2 Jahre)
+            </li>
+            <li>
+              <strong>_ga_*:</strong> Speicherung des Sitzungsstatus (2 Jahre)
+            </li>
+          </ul>
         </div>
 
         <div className="cv-section">
@@ -116,7 +129,66 @@ function Datenschutz(): React.ReactElement {
         </div>
 
         <div className="cv-section">
-          <h4>7. Ihre Rechte</h4>
+          <h4>7. Google Analytics 4</h4>
+          <p>
+            Diese Website benutzt Google Analytics 4, einen Webanalysedienst der
+            Google Ireland Limited ("Google"), Gordon House, Barrow Street,
+            Dublin 4, Irland. Google Analytics 4 verwendet Cookies, die auf
+            Ihrem Computer gespeichert werden und die eine Analyse der Benutzung
+            der Website durch Sie ermöglichen.
+          </p>
+          <p>
+            <strong>Rechtsgrundlage:</strong> Art. 6 Abs. 1 lit. a DSGVO
+            (Einwilligung). Die Verarbeitung erfolgt nur nach Ihrer
+            ausdrücklichen Einwilligung über unseren Cookie-Banner.
+          </p>
+          <p>
+            <strong>IP-Anonymisierung:</strong> Wir haben auf dieser Website die
+            IP-Anonymisierung aktiviert. Dadurch wird Ihre IP-Adresse von Google
+            innerhalb von Mitgliedstaaten der Europäischen Union oder in anderen
+            Vertragsstaaten des Abkommens über den Europäischen Wirtschaftsraum
+            vor der Übermittlung in die USA gekürzt.
+          </p>
+          <p>
+            <strong>Verarbeitete Daten:</strong>
+          </p>
+          <ul className="cv-certifications">
+            <li>Anonymisierte IP-Adresse</li>
+            <li>Besuchte Seiten und Verweildauer</li>
+            <li>Verwendeter Browser und Gerät</li>
+            <li>Herkunft des Besuches (Referrer)</li>
+            <li>Interaktionen mit der Website</li>
+          </ul>
+          <p>
+            <strong>Widerspruchsrecht:</strong> Sie können die Speicherung der
+            Cookies durch eine entsprechende Einstellung Ihrer Browser-Software
+            verhindern oder Ihre Einwilligung im Cookie-Banner widerrufen.
+            Alternativ können Sie ein Browser-Plugin zur Deaktivierung von
+            Google Analytics installieren:
+            <br />
+            <a
+              href="https://tools.google.com/dlpage/gaoptout"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              https://tools.google.com/dlpage/gaoptout
+            </a>
+          </p>
+          <p>
+            Weitere Informationen zum Datenschutz bei Google:
+            <br />
+            <a
+              href="https://policies.google.com/privacy"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              https://policies.google.com/privacy
+            </a>
+          </p>
+        </div>
+
+        <div className="cv-section">
+          <h4>8. Ihre Rechte</h4>
           <p>Ihnen stehen grundsätzlich die Rechte auf:</p>
           <ul className="cv-certifications">
             <li>
@@ -151,7 +223,7 @@ function Datenschutz(): React.ReactElement {
         </div>
 
         <div className="cv-section">
-          <h4>8. Datensicherheit</h4>
+          <h4>9. Datensicherheit</h4>
           <p>
             Wir verwenden innerhalb des Website-Besuchs das verbreitete
             SSL-Verfahren (Secure Socket Layer) in Verbindung mit der jeweils
@@ -162,10 +234,10 @@ function Datenschutz(): React.ReactElement {
         </div>
 
         <div className="cv-section">
-          <h4>9. Aktualität und Änderung dieser Datenschutzerklärung</h4>
+          <h4>10. Aktualität und Änderung dieser Datenschutzerklärung</h4>
           <p>
             Diese Datenschutzerklärung ist aktuell gültig und hat den Stand
-            August 2025. Durch die Weiterentwicklung unserer Website und
+            Februar 2026. Durch die Weiterentwicklung unserer Website und
             Angebote darüber oder aufgrund geänderter gesetzlicher
             beziehungsweise behördlicher Vorgaben kann es notwendig werden,
             diese Datenschutzerklärung zu ändern.
@@ -173,7 +245,7 @@ function Datenschutz(): React.ReactElement {
         </div>
 
         <div className="cv-section">
-          <h4>10. Kontakt</h4>
+          <h4>11. Kontakt</h4>
           <p>
             Bei Fragen zur Erhebung, Verarbeitung oder Nutzung Ihrer
             personenbezogenen Daten, bei Auskünften, Berichtigung, Sperrung oder
