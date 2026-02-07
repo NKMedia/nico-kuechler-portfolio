@@ -7,16 +7,21 @@ import { render, screen, fireEvent, waitFor } from "@testing-library/react";
 import PWAInstallButton from "./PWAInstallButton";
 
 // Mock the PWA utilities
+import * as pwaUtils from "../utils/pwa";
+
 vi.mock("../utils/pwa", () => ({
   initializePWA: vi.fn(),
-  canInstall: vi.fn(() => false),
+  isInstallable: vi.fn(() => false),
   showInstallPrompt: vi.fn(),
   getInstallInstructions: vi.fn(() => ({
-    platform: "desktop",
-    instructions: ["Click install button", "Confirm installation"],
+    title: "Desktop Installation",
+    steps: ["Click install button", "Confirm installation"],
   })),
   trackPWAEvent: vi.fn(),
 }));
+
+// Get mocked functions
+const mockedPwaUtils = vi.mocked(pwaUtils);
 
 describe("PWAInstallButton", () => {
   const mockEventListeners = new Map();
@@ -38,16 +43,14 @@ describe("PWAInstallButton", () => {
   });
 
   it("should not render when PWA installation is not available", () => {
-    const { canInstall } = require("../utils/pwa");
-    canInstall.mockReturnValue(false);
+    mockedPwaUtils.isInstallable.mockReturnValue(false);
 
     const { container } = render(<PWAInstallButton />);
     expect(container.firstChild).toBeNull();
   });
 
   it("should render install button when PWA installation is available", () => {
-    const { canInstall } = require("../utils/pwa");
-    canInstall.mockReturnValue(true);
+    mockedPwaUtils.isInstallable.mockReturnValue(true);
 
     render(<PWAInstallButton />);
 
@@ -57,21 +60,19 @@ describe("PWAInstallButton", () => {
   });
 
   it("should render custom children when provided", () => {
-    const { canInstall } = require("../utils/pwa");
-    canInstall.mockReturnValue(true);
+    mockedPwaUtils.isInstallable.mockReturnValue(true);
 
     render(
       <PWAInstallButton>
         <span>Install Now</span>
-      </PWAInstallButton>
+      </PWAInstallButton>,
     );
 
     expect(screen.getByText("Install Now")).toBeInTheDocument();
   });
 
   it("should apply custom className", () => {
-    const { canInstall } = require("../utils/pwa");
-    canInstall.mockReturnValue(true);
+    mockedPwaUtils.isInstallable.mockReturnValue(true);
 
     render(<PWAInstallButton className="custom-class" />);
 
@@ -80,13 +81,8 @@ describe("PWAInstallButton", () => {
   });
 
   it("should handle successful install prompt", async () => {
-    const {
-      canInstall,
-      showInstallPrompt,
-      trackPWAEvent,
-    } = require("../utils/pwa");
-    canInstall.mockReturnValue(true);
-    showInstallPrompt.mockResolvedValue({
+    mockedPwaUtils.isInstallable.mockReturnValue(true);
+    mockedPwaUtils.showInstallPrompt.mockResolvedValue({
       outcome: "accepted",
       platform: "android",
     });
@@ -100,22 +96,22 @@ describe("PWAInstallButton", () => {
     expect(screen.getByLabelText(/installiere/i)).toBeInTheDocument();
 
     await waitFor(() => {
-      expect(showInstallPrompt).toHaveBeenCalled();
-      expect(trackPWAEvent).toHaveBeenCalledWith("install_prompt_shown");
-      expect(trackPWAEvent).toHaveBeenCalledWith("install_accepted", {
-        platform: "android",
-      });
+      expect(mockedPwaUtils.showInstallPrompt).toHaveBeenCalled();
+      expect(mockedPwaUtils.trackPWAEvent).toHaveBeenCalledWith(
+        "install_prompt_shown",
+      );
+      expect(mockedPwaUtils.trackPWAEvent).toHaveBeenCalledWith(
+        "install_accepted",
+        {
+          platform: "android",
+        },
+      );
     });
   });
 
   it("should handle dismissed install prompt", async () => {
-    const {
-      canInstall,
-      showInstallPrompt,
-      trackPWAEvent,
-    } = require("../utils/pwa");
-    canInstall.mockReturnValue(true);
-    showInstallPrompt.mockResolvedValue({
+    mockedPwaUtils.isInstallable.mockReturnValue(true);
+    mockedPwaUtils.showInstallPrompt.mockResolvedValue({
       outcome: "dismissed",
       platform: "ios",
     });
@@ -126,16 +122,18 @@ describe("PWAInstallButton", () => {
     fireEvent.click(button);
 
     await waitFor(() => {
-      expect(trackPWAEvent).toHaveBeenCalledWith("install_dismissed", {
-        platform: "ios",
-      });
+      expect(mockedPwaUtils.trackPWAEvent).toHaveBeenCalledWith(
+        "install_dismissed",
+        {
+          platform: "ios",
+        },
+      );
     });
   });
 
   it("should show manual instructions when native prompt is not available", async () => {
-    const { canInstall, showInstallPrompt } = require("../utils/pwa");
-    canInstall.mockReturnValue(true);
-    showInstallPrompt.mockResolvedValue({
+    mockedPwaUtils.isInstallable.mockReturnValue(true);
+    mockedPwaUtils.showInstallPrompt.mockResolvedValue({
       outcome: "not-available",
       platform: null,
     });
@@ -146,17 +144,16 @@ describe("PWAInstallButton", () => {
     fireEvent.click(button);
 
     await waitFor(() => {
-      expect(screen.getByText("App installieren")).toBeInTheDocument();
+      expect(screen.getByRole("dialog")).toBeInTheDocument();
       expect(
-        screen.getByText(/um diese app zu installieren/i)
+        screen.getByText(/um diese app zu installieren/i),
       ).toBeInTheDocument();
     });
   });
 
   it("should close instructions modal on close button click", async () => {
-    const { canInstall, showInstallPrompt } = require("../utils/pwa");
-    canInstall.mockReturnValue(true);
-    showInstallPrompt.mockResolvedValue({
+    mockedPwaUtils.isInstallable.mockReturnValue(true);
+    mockedPwaUtils.showInstallPrompt.mockResolvedValue({
       outcome: "not-available",
       platform: null,
     });
@@ -169,21 +166,20 @@ describe("PWAInstallButton", () => {
     fireEvent.click(installButton);
 
     await waitFor(() => {
-      expect(screen.getByText("App installieren")).toBeInTheDocument();
+      expect(screen.getByRole("dialog")).toBeInTheDocument();
     });
 
     const closeButton = screen.getByRole("button", { name: /schließen/i });
     fireEvent.click(closeButton);
 
     await waitFor(() => {
-      expect(screen.queryByText("App installieren")).not.toBeInTheDocument();
+      expect(screen.queryByRole("dialog")).not.toBeInTheDocument();
     });
   });
 
   it("should close instructions modal on escape key", async () => {
-    const { canInstall, showInstallPrompt } = require("../utils/pwa");
-    canInstall.mockReturnValue(true);
-    showInstallPrompt.mockResolvedValue({
+    mockedPwaUtils.isInstallable.mockReturnValue(true);
+    mockedPwaUtils.showInstallPrompt.mockResolvedValue({
       outcome: "not-available",
       platform: null,
     });
@@ -194,31 +190,30 @@ describe("PWAInstallButton", () => {
     fireEvent.click(button);
 
     await waitFor(() => {
-      expect(screen.getByText("App installieren")).toBeInTheDocument();
+      expect(screen.getByRole("dialog")).toBeInTheDocument();
     });
 
     const modal = screen.getByRole("dialog");
     fireEvent.keyDown(modal, { key: "Escape" });
 
     await waitFor(() => {
-      expect(screen.queryByText("App installieren")).not.toBeInTheDocument();
+      expect(screen.queryByRole("dialog")).not.toBeInTheDocument();
     });
   });
 
   it("should handle PWA event listeners correctly", () => {
-    const { canInstall } = require("../utils/pwa");
-    canInstall.mockReturnValue(false);
+    mockedPwaUtils.isInstallable.mockReturnValue(false);
 
     const { unmount } = render(<PWAInstallButton />);
 
     // Check that event listeners are added
     expect(globalThis.addEventListener).toHaveBeenCalledWith(
       "pwa-installable",
-      expect.any(Function)
+      expect.any(Function),
     );
     expect(globalThis.addEventListener).toHaveBeenCalledWith(
       "pwa-installed",
-      expect.any(Function)
+      expect.any(Function),
     );
 
     unmount();
@@ -226,17 +221,16 @@ describe("PWAInstallButton", () => {
     // Check that event listeners are removed
     expect(globalThis.removeEventListener).toHaveBeenCalledWith(
       "pwa-installable",
-      expect.any(Function)
+      expect.any(Function),
     );
     expect(globalThis.removeEventListener).toHaveBeenCalledWith(
       "pwa-installed",
-      expect.any(Function)
+      expect.any(Function),
     );
   });
 
   it("should update install availability when receiving PWA events", () => {
-    const { canInstall } = require("../utils/pwa");
-    canInstall.mockReturnValue(false);
+    mockedPwaUtils.isInstallable.mockReturnValue(false);
 
     render(<PWAInstallButton />);
 
@@ -251,7 +245,7 @@ describe("PWAInstallButton", () => {
     // The button should now be available (mocked canInstall should be checked)
     expect(globalThis.addEventListener).toHaveBeenCalledWith(
       "pwa-installable",
-      expect.any(Function)
+      expect.any(Function),
     );
   });
 });
