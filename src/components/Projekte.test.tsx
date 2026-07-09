@@ -1,10 +1,18 @@
 import { describe, it, expect, vi } from "vitest";
 import { render, screen } from "../test/test-utils";
+import userEvent from "@testing-library/user-event";
 import Projekte from "./Projekte";
+import { unifiedAnalytics } from "../utils/unifiedAnalytics";
 
 // Mock ProfileCard component
 vi.mock("./ProfileCard", () => ({
   default: () => <div data-testid="profile-card">Profile Card</div>,
+}));
+
+// Mock unified analytics
+vi.mock("../utils/unifiedAnalytics", () => ({
+  unifiedAnalytics: { trackProjectInteraction: vi.fn() },
+  default: { trackProjectInteraction: vi.fn() },
 }));
 
 describe("Projekte", () => {
@@ -38,7 +46,7 @@ describe("Projekte", () => {
     expect(projectGrid).toBeInTheDocument();
 
     const projectCards = document.querySelectorAll(".project-card");
-    expect(projectCards).toHaveLength(6); // Total number of projects
+    expect(projectCards).toHaveLength(8); // Total number of projects
   });
 
   describe("Flughafen München Project", () => {
@@ -57,6 +65,20 @@ describe("Projekte", () => {
           /Konzeption und Entwicklung individueller Softwarelösungen für FMG/
         )
       ).toBeInTheDocument();
+    });
+
+    it("links the live IT-Akademie event page as public proof", () => {
+      render(<Projekte />);
+
+      const link = screen.getByRole("link", {
+        name: /IT-Akademie Eventseite/,
+      });
+      expect(link).toHaveAttribute(
+        "href",
+        "https://levoram.github.io/IT-Akademie-Eventseite/"
+      );
+      expect(link).toHaveAttribute("target", "_blank");
+      expect(link).toHaveAttribute("rel", "noopener noreferrer");
     });
   });
 
@@ -212,6 +234,83 @@ describe("Projekte", () => {
     expect(screen.getAllByText(/TypeScript/).length).toBeGreaterThan(0);
     expect(screen.getAllByText(/VR\/AR/).length).toBeGreaterThan(0);
     expect(screen.getAllByText(/UI\/UX Design/).length).toBeGreaterThan(0);
+  });
+
+  describe("Ardem Project", () => {
+    it("displays Ardem card with Steam link", () => {
+      render(<Projekte />);
+
+      expect(screen.getByText("Ardem")).toBeInTheDocument();
+      const card = screen.getByText("Ardem").closest(".project-card");
+      expect(card).toHaveTextContent("Game Art");
+
+      const steamLink = screen.getByRole("link", {
+        name: /Auf Steam ansehen/,
+      });
+      expect(steamLink).toHaveAttribute(
+        "href",
+        "https://store.steampowered.com/app/2179480/Ardem/"
+      );
+    });
+  });
+
+  describe("Neverknights Project", () => {
+    it("displays Neverknights card with website link", () => {
+      render(<Projekte />);
+
+      expect(screen.getByText("Neverknights")).toBeInTheDocument();
+      const link = screen.getByRole("link", {
+        name: /neverknights\.de besuchen/i,
+      });
+      expect(link).toHaveAttribute("href", "https://www.neverknights.de/en/");
+    });
+  });
+
+  describe("itch.io Links", () => {
+    it("displays SnakeTris and itch.io profile links on Mediendesign card", () => {
+      render(<Projekte />);
+
+      const snaketris = screen.getByRole("link", {
+        name: /SnakeTris Adventure spielen/,
+      });
+      expect(snaketris).toHaveAttribute(
+        "href",
+        "https://levoram.itch.io/snaketris-adventure"
+      );
+
+      const profile = screen.getByRole("link", {
+        name: /Alle Games auf itch\.io/,
+      });
+      expect(profile).toHaveAttribute("href", "https://levoram.itch.io/");
+    });
+  });
+
+  it("all external project links are secure and open in new tab", () => {
+    render(<Projekte />);
+
+    const externalLinks = document.querySelectorAll(
+      ".project-card a[href^='http']"
+    );
+    expect(externalLinks.length).toBeGreaterThanOrEqual(4);
+    externalLinks.forEach((link) => {
+      expect(link).toHaveAttribute("target", "_blank");
+      expect(link).toHaveAttribute("rel", "noopener noreferrer");
+    });
+  });
+
+  it("tracks outbound clicks on project links", async () => {
+    const user = userEvent.setup();
+    render(<Projekte />);
+
+    const steamLink = screen.getByRole("link", { name: /Auf Steam ansehen/ });
+    // jsdom cannot navigate; prevent the error noise
+    steamLink.addEventListener("click", (e) => e.preventDefault());
+    await user.click(steamLink);
+
+    expect(unifiedAnalytics.trackProjectInteraction).toHaveBeenCalledWith(
+      "ardem",
+      "demo_click"
+    );
   });
 
   it("shows project descriptions with sufficient detail", () => {

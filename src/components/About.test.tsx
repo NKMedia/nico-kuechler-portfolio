@@ -126,6 +126,18 @@ describe("About", () => {
     expect(text).toHaveTextContent("Unity-Entwickler");
   });
 
+  it("mentions game art background and links to Neverknights", () => {
+    render(<About />);
+
+    const text = document.querySelector(".profile-desc");
+    expect(text).toHaveTextContent("Games & Animation");
+
+    const nkLink = screen.getByRole("link", { name: /Neverknights/ });
+    expect(nkLink).toHaveAttribute("href", "https://www.neverknights.de/en/");
+    expect(nkLink).toHaveAttribute("target", "_blank");
+    expect(nkLink).toHaveAttribute("rel", "noopener noreferrer");
+  });
+
   it("integrates ProfileCard component", () => {
     render(<About />);
 

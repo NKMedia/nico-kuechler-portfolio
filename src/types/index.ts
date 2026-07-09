@@ -148,6 +148,26 @@ export interface PerformanceReport {
   metrics: PerformanceMetrics;
 }
 
+// Project portfolio types
+export interface ProjectLink {
+  label: string;
+  url: string;
+  icon: string; // Font Awesome class, e.g. "fab fa-steam"
+}
+
+export interface ProjectMeta {
+  label: string; // e.g. "Zeitraum", "Technologien", "Unternehmen"
+  value: string;
+}
+
+export interface Project {
+  id: string;
+  title: string;
+  meta: ProjectMeta[];
+  description: string;
+  links?: ProjectLink[];
+}
+
 // Component prop types
 export interface ErrorBoundaryProps {
   children: React.ReactNode;
@@ -182,23 +202,6 @@ export interface SyncEvent extends Event {
   tag: string;
   lastChance: boolean;
   waitUntil(promise: Promise<unknown>): void;
-}
-
-// Project/Portfolio specific types
-export interface Project {
-  id: string;
-  title: string;
-  description: string;
-  technologies: string[];
-  period: string;
-  organization?: string;
-  highlights?: string[];
-  images?: string[];
-  links?: {
-    demo?: string;
-    code?: string;
-    case_study?: string;
-  };
 }
 
 export interface WorkExperience {

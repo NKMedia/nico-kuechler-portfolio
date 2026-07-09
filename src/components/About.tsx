@@ -1,4 +1,4 @@
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import ProfileCard from "./ProfileCard";
 
 /**
@@ -42,6 +42,20 @@ function About(): React.ReactElement {
           Leben. Als selbstständiger Mediendesigner und zertifizierter
           Unity-Entwickler biete ich maßgeschneiderte Lösungen für Unternehmen
           jeder Größe.
+          <br />
+          <br />
+          Mit meinem B.A. in Games &amp; Animation verbinde ich Software und
+          Game Art: Auf{" "}
+          <a
+            href="https://www.neverknights.de/en/"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            Neverknights
+          </a>{" "}
+          teile ich Tutorials zu Pixel Art und Farbtheorie — und meine Games
+          und Design-Beiträge finden Sie auf der{" "}
+          <Link to="/projekte">Projektseite</Link>.
         </p>
       </div>
     </div>
