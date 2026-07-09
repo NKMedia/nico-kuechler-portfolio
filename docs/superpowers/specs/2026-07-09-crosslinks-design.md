@@ -50,6 +50,11 @@ Kein neues Consent-Handling nötig — läuft über den vorhandenen Cookie-Conse
 
 ### D. Identitäts-Vernetzung (SEO)
 
+- **Korrektur nach Code-Recherche:** GitHub-Icons existieren bereits in
+  `ProfileCard.tsx` und `Footer.tsx` (hardcoded, korrekte URLs) — kein Umbau auf
+  `SOCIAL_LINKS` nötig (YAGNI). `index.html` enthält bereits ein JSON-LD
+  `Person`-Schema, aber mit falschen `sameAs`-URLs → wird korrigiert statt neu
+  gebaut.
 - JSON-LD `Person`-Schema in `index.html` (statisch, kein JS nötig):
   - `name`: Nico Küchler, `jobTitle`, `url`: https://nico-kuechler.de
   - `sameAs`: LinkedIn (`https://www.linkedin.com/in/nico-kuechler-9337a762/`),
