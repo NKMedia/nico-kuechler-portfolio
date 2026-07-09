@@ -14,13 +14,35 @@ interface ConsentState {
 type WindowWithGA4 = typeof globalThis & { loadGA4?: () => void };
 
 /**
+ * Reads the stored consent state from localStorage.
+ * Returns null if no valid consent for the current version exists.
+ */
+function getStoredConsent(): ConsentState | null {
+  try {
+    const storedConsent = localStorage.getItem(CONSENT_KEY);
+    if (storedConsent) {
+      const consent: ConsentState = JSON.parse(storedConsent);
+      if (consent.version === CONSENT_VERSION) {
+        return consent;
+      }
+    }
+  } catch {
+    // localStorage might be blocked or contain invalid JSON
+  }
+  return null;
+}
+
+/**
  * Cookie Consent Banner for GDPR compliance with Google Analytics 4
  * Shows a consent banner for analytics tracking and handles user preferences
  *
  * @returns Cookie consent banner component or null if consent already given
  */
 function CookieConsent(): React.ReactElement | null {
-  const [showBanner, setShowBanner] = useState(false);
+  // Show banner only if no valid consent decision is stored
+  const [showBanner, setShowBanner] = useState(
+    () => getStoredConsent() === null,
+  );
   const [isClosing, setIsClosing] = useState(false);
 
   const loadAnalytics = useCallback(() => {
@@ -46,26 +68,10 @@ function CookieConsent(): React.ReactElement | null {
   }, []);
 
   useEffect(() => {
-    // Check if consent was already given
-    try {
-      const storedConsent = localStorage.getItem(CONSENT_KEY);
-      if (storedConsent) {
-        const consent: ConsentState = JSON.parse(storedConsent);
-        // Re-show if consent version changed
-        if (consent.version === CONSENT_VERSION) {
-          // User already made a choice
-          if (consent.given) {
-            // Load GA4 if consent was given
-            loadAnalytics();
-          }
-          return;
-        }
-      }
-      // No valid consent found, show banner
-      setShowBanner(true);
-    } catch {
-      // If any error, show banner
-      setShowBanner(true);
+    // Load GA4 if consent was already given
+    const consent = getStoredConsent();
+    if (consent?.given) {
+      loadAnalytics();
     }
   }, [loadAnalytics]);
 

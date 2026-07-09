@@ -30,6 +30,9 @@ vi.mock("../constants", () => ({
   SUCCESS_MESSAGES: {
     formSubmit: "Ihr E-Mail-Programm wurde geöffnet.",
   },
+  FEATURES: {
+    analytics: false,
+  },
 }));
 
 describe("Kontakt", () => {
@@ -42,7 +45,7 @@ describe("Kontakt", () => {
 
     expect(screen.getByText("Kontakt")).toBeInTheDocument();
     expect(
-      screen.getByText("Lassen Sie uns zusammenarbeiten")
+      screen.getByText("Lassen Sie uns zusammenarbeiten"),
     ).toBeInTheDocument();
     expect(screen.getByTestId("profile-card")).toBeInTheDocument();
   });
@@ -91,10 +94,10 @@ describe("Kontakt", () => {
       expect(screen.getByText("mail@nico-kuechler.de")).toBeInTheDocument();
       expect(screen.getByText("+49 171 816 816 4")).toBeInTheDocument();
       expect(
-        screen.getByText("Maisach (Gernlinden), Bayern")
+        screen.getByText("Maisach (Gernlinden), Bayern"),
       ).toBeInTheDocument();
       expect(
-        screen.getByText("Freelance-Projekte & Beratung")
+        screen.getByText("Freelance-Projekte & Beratung"),
       ).toBeInTheDocument();
     });
   });
@@ -105,7 +108,7 @@ describe("Kontakt", () => {
 
       // Use getByRole to get the heading instead of text that appears twice
       expect(
-        screen.getByRole("heading", { level: 4, name: "Nachricht senden" })
+        screen.getByRole("heading", { level: 4, name: "Nachricht senden" }),
       ).toBeInTheDocument();
       expect(screen.getByLabelText("Name *")).toBeInTheDocument();
       expect(screen.getByLabelText("E-Mail *")).toBeInTheDocument();
@@ -128,20 +131,20 @@ describe("Kontakt", () => {
       expect(emailInput).toHaveAttribute("type", "email");
       expect(emailInput).toHaveAttribute(
         "placeholder",
-        "ihre.email@beispiel.com"
+        "ihre.email@beispiel.com",
       );
       expect(emailInput).toHaveAttribute("required");
 
       expect(subjectInput).toHaveAttribute("type", "text");
       expect(subjectInput).toHaveAttribute(
         "placeholder",
-        "Betreff Ihrer Nachricht"
+        "Betreff Ihrer Nachricht",
       );
       expect(subjectInput).toHaveAttribute("required");
 
       expect(messageTextarea).toHaveAttribute(
         "placeholder",
-        "Beschreiben Sie Ihr Projekt oder Ihre Anfrage..."
+        "Beschreiben Sie Ihr Projekt oder Ihre Anfrage...",
       );
       expect(messageTextarea).toHaveAttribute("rows", "5");
       expect(messageTextarea).toHaveAttribute("required");
@@ -182,7 +185,7 @@ describe("Kontakt", () => {
       render(<Kontakt />);
 
       const footerText = screen.getByText(
-        /Pflichtfelder. Die Nachricht wird über Ihr Standard-E-Mail-Programm gesendet./
+        /Pflichtfelder. Die Nachricht wird über Ihr Standard-E-Mail-Programm gesendet./,
       );
       expect(footerText).toBeInTheDocument();
     });
@@ -229,7 +232,7 @@ describe("Kontakt", () => {
 
       // Mock navigation utilities
       vi.mocked(navigation.generateMailto).mockReturnValue(
-        "mailto:test@example.com"
+        "mailto:test@example.com",
       );
       vi.mocked(navigation.navigateToUrl).mockImplementation(() => {});
 

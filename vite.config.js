@@ -2,7 +2,7 @@
 import { defineConfig } from "vite";
 import react from "@vitejs/plugin-react";
 import { visualizer } from "rollup-plugin-visualizer";
-import { resolve } from "path";
+import { resolve } from "node:path";
 
 // https://vite.dev/config/
 export default defineConfig({
@@ -31,9 +31,16 @@ export default defineConfig({
   build: {
     rollupOptions: {
       output: {
-        manualChunks: {
-          vendor: ["react", "react-dom"],
-          router: ["react-router-dom"],
+        // Vite 8 (Rolldown) requires manualChunks as a function
+        manualChunks(id) {
+          if (id.includes("node_modules")) {
+            if (id.includes("react-router")) {
+              return "router";
+            }
+            if (id.includes("react") || id.includes("scheduler")) {
+              return "vendor";
+            }
+          }
         },
       },
     },

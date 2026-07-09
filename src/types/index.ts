@@ -239,11 +239,13 @@ export interface Certification {
 
 // Event handler types
 export type FormChangeHandler = (
-  e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+  e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
 ) => void;
-export type FormSubmitHandler = (e: React.FormEvent<HTMLFormElement>) => void;
+export type FormSubmitHandler = (
+  e: React.SubmitEvent<HTMLFormElement>,
+) => void | Promise<void>;
 export type ButtonClickHandler = (
-  e: React.MouseEvent<HTMLButtonElement>
+  e: React.MouseEvent<HTMLButtonElement>,
 ) => void;
 export type LinkClickHandler = (e: React.MouseEvent<HTMLAnchorElement>) => void;
 

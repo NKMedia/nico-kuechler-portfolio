@@ -37,7 +37,8 @@ class PortfolioAnalytics {
   }
 
   private generateSessionId(): string {
-    return `session_${Date.now()}_${Math.random().toString(36).slice(2, 11)}`;
+    // Use a cryptographically secure random ID (Sonar S2245)
+    return `session_${Date.now()}_${crypto.randomUUID()}`;
   }
 
   private initializeSession(): void {
