@@ -204,23 +204,6 @@ export interface SyncEvent extends Event {
   waitUntil(promise: Promise<unknown>): void;
 }
 
-// Project/Portfolio specific types
-export interface Project {
-  id: string;
-  title: string;
-  description: string;
-  technologies: string[];
-  period: string;
-  organization?: string;
-  highlights?: string[];
-  images?: string[];
-  links?: {
-    demo?: string;
-    code?: string;
-    case_study?: string;
-  };
-}
-
 export interface WorkExperience {
   id: string;
   position: string;
