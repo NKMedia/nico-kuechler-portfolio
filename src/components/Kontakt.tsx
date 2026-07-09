@@ -62,7 +62,7 @@ function Kontakt(): React.ReactElement {
       subject: "",
       message: "",
     },
-    validateContactForm
+    validateContactForm,
   );
 
   /**
