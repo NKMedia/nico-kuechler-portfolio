@@ -5,6 +5,7 @@ import Footer from "./components/Footer";
 import ErrorBoundary from "./components/ErrorBoundary";
 import SkipLinks from "./components/SkipLinks";
 import CookieConsent from "./components/CookieConsent";
+import AnalyticsTracker from "./components/AnalyticsTracker";
 import { initializePWA } from "./utils/pwa";
 import "./App.css";
 
@@ -59,6 +60,7 @@ const App: React.FC = () => {
   return (
     <ErrorBoundary>
       <Router>
+        <AnalyticsTracker />
         <SkipLinks />
         <div className="main-bg fade-in">
           <Header />

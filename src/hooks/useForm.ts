@@ -1,4 +1,4 @@
-import { useState, useCallback, ChangeEvent, FormEvent } from "react";
+import { useState, useCallback, ChangeEvent, SubmitEvent } from "react";
 import type {
   UseFormReturn,
   FormChangeHandler,
@@ -15,11 +15,11 @@ import type {
  */
 export function useForm<T extends Record<string, unknown>>(
   initialValues: T,
-  validate?: (values: T) => Record<keyof T, string>
+  validate?: (values: T) => Record<keyof T, string>,
 ): UseFormReturn<T> {
   const [values, setValues] = useState<T>(initialValues);
   const [errors, setErrors] = useState<Record<keyof T, string>>(
-    {} as Record<keyof T, string>
+    {} as Record<keyof T, string>,
   );
   const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
 
@@ -42,7 +42,7 @@ export function useForm<T extends Record<string, unknown>>(
         }));
       }
     },
-    [errors]
+    [errors],
   );
 
   // Validate form
@@ -56,14 +56,14 @@ export function useForm<T extends Record<string, unknown>>(
       // Check if any errors exist
       return !Object.values(newErrors).some((error) => error !== "");
     },
-    [validate]
+    [validate],
   );
 
   // Handle form submission
   const handleSubmit = useCallback(
     (onSubmit: (values: T) => Promise<void>) => {
       const submitHandler: FormSubmitHandler = async (
-        e: FormEvent<HTMLFormElement>
+        e: SubmitEvent<HTMLFormElement>,
       ) => {
         e.preventDefault();
 
@@ -88,7 +88,7 @@ export function useForm<T extends Record<string, unknown>>(
 
       return submitHandler;
     },
-    [values, isSubmitting, validateForm]
+    [values, isSubmitting, validateForm],
   );
 
   // Reset form to initial values
@@ -124,7 +124,7 @@ export function useForm<T extends Record<string, unknown>>(
     (field: keyof T): string => {
       return errors[field] || "";
     },
-    [errors]
+    [errors],
   );
 
   // Check if field has error
@@ -132,7 +132,7 @@ export function useForm<T extends Record<string, unknown>>(
     (field: keyof T): boolean => {
       return !!errors[field];
     },
-    [errors]
+    [errors],
   );
 
   // Check if form has any errors

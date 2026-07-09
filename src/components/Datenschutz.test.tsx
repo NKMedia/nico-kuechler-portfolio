@@ -318,7 +318,7 @@ describe("Datenschutz", () => {
     render(<Datenschutz />);
 
     const cvSections = document.querySelectorAll(".cv-section");
-    expect(cvSections.length).toBe(11); // Total number of privacy policy sections (including Google Analytics 4)
+    expect(cvSections).toHaveLength(11); // Total number of privacy policy sections (including Google Analytics 4)
 
     cvSections.forEach((section) => {
       const heading = section.querySelector("h4");

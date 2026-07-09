@@ -26,7 +26,10 @@ export function PWAInstallButton({
   className = "",
   children,
 }: PWAInstallButtonProps) {
-  const [installAvailable, setInstallAvailable] = useState(false);
+  // Check initial state lazily (isInstallable reads navigator/DOM directly)
+  const [installAvailable, setInstallAvailable] = useState(() =>
+    isInstallable(),
+  );
   const [isInstalling, setIsInstalling] = useState(false);
   const [showInstructions, setShowInstructions] = useState(false);
 
@@ -34,13 +37,10 @@ export function PWAInstallButton({
     // Initialize PWA functionality
     initializePWA();
 
-    // Check initial state
-    setInstallAvailable(isInstallable());
-
     // Listen for PWA install events
     const handleInstallable = (event: CustomEvent<PWAInstallState>) => {
       setInstallAvailable(
-        event.detail.isInstallable && !event.detail.isInstalled
+        event.detail.isInstallable && !event.detail.isInstalled,
       );
     };
 
@@ -51,14 +51,14 @@ export function PWAInstallButton({
 
     globalThis.addEventListener(
       "pwa-installable",
-      handleInstallable as EventListener
+      handleInstallable as EventListener,
     );
     globalThis.addEventListener("pwa-installed", handleInstalled);
 
     return () => {
       globalThis.removeEventListener(
         "pwa-installable",
-        handleInstallable as EventListener
+        handleInstallable as EventListener,
       );
       globalThis.removeEventListener("pwa-installed", handleInstalled);
     };

@@ -8,7 +8,7 @@ import tsparser from "@typescript-eslint/parser";
 export default [
   // Global ignores
   {
-    ignores: ["dist/**", "node_modules/**", "*.d.ts", "vite.config.test.ts"],
+    ignores: ["dist/**", "node_modules/**", "*.d.ts"],
   },
 
   // JavaScript files configuration
