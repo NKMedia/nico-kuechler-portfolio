@@ -148,6 +148,26 @@ export interface PerformanceReport {
   metrics: PerformanceMetrics;
 }
 
+// Project portfolio types
+export interface ProjectLink {
+  label: string;
+  url: string;
+  icon: string; // Font Awesome class, e.g. "fab fa-steam"
+}
+
+export interface ProjectMeta {
+  label: string; // e.g. "Zeitraum", "Technologien", "Unternehmen"
+  value: string;
+}
+
+export interface Project {
+  id: string;
+  title: string;
+  meta: ProjectMeta[];
+  description: string;
+  links?: ProjectLink[];
+}
+
 // Component prop types
 export interface ErrorBoundaryProps {
   children: React.ReactNode;
