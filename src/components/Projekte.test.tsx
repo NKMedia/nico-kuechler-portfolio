@@ -1,10 +1,18 @@
 import { describe, it, expect, vi } from "vitest";
 import { render, screen } from "../test/test-utils";
+import userEvent from "@testing-library/user-event";
 import Projekte from "./Projekte";
+import { unifiedAnalytics } from "../utils/unifiedAnalytics";
 
 // Mock ProfileCard component
 vi.mock("./ProfileCard", () => ({
   default: () => <div data-testid="profile-card">Profile Card</div>,
+}));
+
+// Mock unified analytics
+vi.mock("../utils/unifiedAnalytics", () => ({
+  unifiedAnalytics: { trackProjectInteraction: vi.fn() },
+  default: { trackProjectInteraction: vi.fn() },
 }));
 
 describe("Projekte", () => {
@@ -274,6 +282,21 @@ describe("Projekte", () => {
       expect(link).toHaveAttribute("target", "_blank");
       expect(link).toHaveAttribute("rel", "noopener noreferrer");
     });
+  });
+
+  it("tracks outbound clicks on project links", async () => {
+    const user = userEvent.setup();
+    render(<Projekte />);
+
+    const steamLink = screen.getByRole("link", { name: /Auf Steam ansehen/ });
+    // jsdom cannot navigate; prevent the error noise
+    steamLink.addEventListener("click", (e) => e.preventDefault());
+    await user.click(steamLink);
+
+    expect(unifiedAnalytics.trackProjectInteraction).toHaveBeenCalledWith(
+      "ardem",
+      "demo_click"
+    );
   });
 
   it("shows project descriptions with sufficient detail", () => {

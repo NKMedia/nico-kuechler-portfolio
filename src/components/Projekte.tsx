@@ -1,5 +1,6 @@
 import ProfileCard from "./ProfileCard";
 import { PROJECTS } from "../constants/projects";
+import { unifiedAnalytics } from "../utils/unifiedAnalytics";
 
 /**
  * Projekte component - Portfolio page displaying selected projects and work
@@ -39,6 +40,12 @@ function Projekte(): React.ReactElement {
                       target="_blank"
                       rel="noopener noreferrer"
                       className="project-link"
+                      onClick={() =>
+                        unifiedAnalytics.trackProjectInteraction(
+                          project.id,
+                          "demo_click"
+                        )
+                      }
                     >
                       <i className={link.icon} aria-hidden="true" />{" "}
                       {link.label}
