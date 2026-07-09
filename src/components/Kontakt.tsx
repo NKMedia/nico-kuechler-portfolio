@@ -1,6 +1,7 @@
-import { useState } from "react";
+import { useState, useRef } from "react";
 import ProfileCard from "./ProfileCard";
 import { validation, navigation } from "../utils";
+import { analytics } from "../utils/analytics";
 import { useForm } from "../hooks";
 import { CONTACT_INFO, SUCCESS_MESSAGES } from "../constants";
 import { ContactFormData, SubmitStatus } from "../types";
@@ -18,6 +19,18 @@ import { ContactFormData, SubmitStatus } from "../types";
  */
 function Kontakt(): React.ReactElement {
   const [submitStatus, setSubmitStatus] = useState<SubmitStatus | null>(null);
+  const hasStartedForm = useRef(false);
+
+  /**
+   * Track form field focus; the first focus counts as "form start"
+   */
+  const handleFieldFocus = (fieldName: string): void => {
+    if (!hasStartedForm.current) {
+      analytics.trackContactFormEvent("start");
+      hasStartedForm.current = true;
+    }
+    analytics.trackContactFormEvent("field_focus", fieldName);
+  };
 
   // Form validation function
   const validateContactForm = (formData: ContactFormData) => {
@@ -57,6 +70,7 @@ function Kontakt(): React.ReactElement {
    */
   const handleFormSubmit = async (formData: ContactFormData): Promise<void> => {
     setSubmitStatus(null);
+    analytics.trackContactFormEvent("submit");
 
     try {
       // Create mailto link as fallback
@@ -71,6 +85,7 @@ function Kontakt(): React.ReactElement {
 
       // Simulate success state
       setTimeout(() => {
+        analytics.trackContactFormEvent("success");
         setSubmitStatus({
           type: "success",
           message: SUCCESS_MESSAGES.formSubmit,
@@ -79,6 +94,7 @@ function Kontakt(): React.ReactElement {
       }, 1000);
     } catch (error) {
       console.error("Error submitting form:", error);
+      analytics.trackContactFormEvent("error");
       setSubmitStatus({
         type: "error",
         message:
@@ -150,6 +166,7 @@ function Kontakt(): React.ReactElement {
                 placeholder="Ihr Name"
                 value={form.values.name}
                 onChange={form.handleChange}
+                onFocus={() => handleFieldFocus("name")}
                 disabled={form.isSubmitting}
                 required
                 aria-describedby={
@@ -172,6 +189,7 @@ function Kontakt(): React.ReactElement {
                 placeholder="ihre.email@beispiel.com"
                 value={form.values.email}
                 onChange={form.handleChange}
+                onFocus={() => handleFieldFocus("email")}
                 disabled={form.isSubmitting}
                 required
                 aria-describedby={
@@ -194,6 +212,7 @@ function Kontakt(): React.ReactElement {
                 placeholder="Betreff Ihrer Nachricht"
                 value={form.values.subject}
                 onChange={form.handleChange}
+                onFocus={() => handleFieldFocus("subject")}
                 disabled={form.isSubmitting}
                 required
                 aria-describedby={
@@ -216,6 +235,7 @@ function Kontakt(): React.ReactElement {
                 rows={5}
                 value={form.values.message}
                 onChange={form.handleChange}
+                onFocus={() => handleFieldFocus("message")}
                 disabled={form.isSubmitting}
                 required
                 aria-describedby={

@@ -30,6 +30,9 @@ vi.mock("../constants", () => ({
   SUCCESS_MESSAGES: {
     formSubmit: "Ihr E-Mail-Programm wurde geöffnet.",
   },
+  FEATURES: {
+    analytics: false,
+  },
 }));
 
 describe("Kontakt", () => {
