@@ -66,6 +66,20 @@ describe("Projekte", () => {
         )
       ).toBeInTheDocument();
     });
+
+    it("links the live IT-Akademie event page as public proof", () => {
+      render(<Projekte />);
+
+      const link = screen.getByRole("link", {
+        name: /IT-Akademie Eventseite/,
+      });
+      expect(link).toHaveAttribute(
+        "href",
+        "https://levoram.github.io/IT-Akademie-Eventseite/"
+      );
+      expect(link).toHaveAttribute("target", "_blank");
+      expect(link).toHaveAttribute("rel", "noopener noreferrer");
+    });
   });
 
   describe("VR/AR Mixed Reality Project", () => {

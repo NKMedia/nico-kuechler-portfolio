@@ -15,6 +15,13 @@ export const PROJECTS: Project[] = [
     ],
     description:
       "Konzeption und Entwicklung individueller Softwarelösungen für FMG, Tochtergesellschaften und Lufthansa. Schwerpunkt auf Webentwicklung, UI/UX Design und Einführung moderner Frontend-Tools.",
+    links: [
+      {
+        label: "Beispiel: IT-Akademie Eventseite",
+        url: "https://levoram.github.io/IT-Akademie-Eventseite/",
+        icon: "fas fa-external-link-alt",
+      },
+    ],
   },
   {
     id: "ardem",
