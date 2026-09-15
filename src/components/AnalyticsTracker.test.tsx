@@ -26,15 +26,6 @@ describe("AnalyticsTracker", () => {
     expect(container).toBeEmptyDOMElement();
   });
 
-  it("sets a route-specific document title", () => {
-    render(
-      <MemoryRouter initialEntries={["/lebenslauf"]}>
-        <AnalyticsTracker />
-      </MemoryRouter>,
-    );
-    expect(document.title).toContain("Lebenslauf");
-  });
-
   it("sends a page_view event to gtag", () => {
     render(
       <MemoryRouter initialEntries={["/projekte"]}>
@@ -51,13 +42,17 @@ describe("AnalyticsTracker", () => {
     );
   });
 
-  it("uses a 404 title for unknown routes", () => {
+  it("uses a 404 page title for unknown routes", () => {
     render(
       <MemoryRouter initialEntries={["/gibt-es-nicht"]}>
         <AnalyticsTracker />
       </MemoryRouter>,
     );
-    expect(document.title).toContain("404");
+    expect(gtagMock).toHaveBeenCalledWith(
+      "event",
+      "page_view",
+      expect.objectContaining({ page_title: expect.stringContaining("404") }),
+    );
   });
 
   it("does not throw when gtag is not available", () => {

@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://nico-kuechler.de/sitemap.xml

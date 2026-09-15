@@ -3,11 +3,31 @@ import { defineConfig } from "vite";
 import react from "@vitejs/plugin-react";
 import { visualizer } from "rollup-plugin-visualizer";
 import { resolve } from "node:path";
+import { writeRouteHtmlFiles } from "./src/seo/prerender.ts";
+
+/**
+ * After the build, writes one HTML file per route with its own SEO meta
+ * (title, description, canonical, Open Graph) — see src/seo/prerender.ts.
+ */
+function routeHtml() {
+  let outDir;
+  return {
+    name: "route-html",
+    apply: "build",
+    configResolved(config) {
+      outDir = resolve(config.root, config.build.outDir);
+    },
+    writeBundle() {
+      writeRouteHtmlFiles(outDir);
+    },
+  };
+}
 
 // https://vite.dev/config/
 export default defineConfig(({ mode }) => ({
   plugins: [
     react(),
+    routeHtml(),
     // Bundle analyzer - only via `npm run build:analyze` (--mode analyze).
     // Normal builds must not open a browser or ship stats.html to production.
     ...(mode === "analyze"

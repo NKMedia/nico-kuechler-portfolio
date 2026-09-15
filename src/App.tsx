@@ -6,6 +6,7 @@ import ErrorBoundary from "./components/ErrorBoundary";
 import SkipLinks from "./components/SkipLinks";
 import CookieConsent from "./components/CookieConsent";
 import AnalyticsTracker from "./components/AnalyticsTracker";
+import RouteMeta from "./components/RouteMeta";
 import { initializePWA } from "./utils/pwa";
 import "./App.css";
 
@@ -60,6 +61,7 @@ const App: React.FC = () => {
   return (
     <ErrorBoundary>
       <Router>
+        <RouteMeta />
         <AnalyticsTracker />
         <SkipLinks />
         <div className="main-bg fade-in">
