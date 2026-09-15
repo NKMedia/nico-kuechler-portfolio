@@ -32,7 +32,7 @@ function About(): React.ReactElement {
         <p className="profile-desc">
           Ich bin Nico Küchler, Senior Software Developer und Media Designer mit
           über 10 Jahren Erfahrung in der Entwicklung innovativer digitaler
-          Lösungen. Seit 2022 arbeite ich am Flughafen München, wo ich komplexe
+          Lösungen. Seit 2016 arbeite ich am Flughafen München, wo ich komplexe
           Softwareprojekte für die Luftfahrtbranche entwickle.
           <br />
           <br />

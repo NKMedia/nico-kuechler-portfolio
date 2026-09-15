@@ -55,6 +55,16 @@ describe("About", () => {
     expect(descriptionText).toHaveTextContent("Flughafen München");
   });
 
+  it("states the start at Flughafen München as 2016, matching the CV", () => {
+    render(<About />);
+
+    const descriptionText = screen.getByText(/Ich bin Nico Küchler/);
+    expect(descriptionText).toHaveTextContent(
+      "Seit 2016 arbeite ich am Flughafen München",
+    );
+    expect(descriptionText).not.toHaveTextContent("Seit 2022");
+  });
+
   it("renders navigation buttons", () => {
     render(<About />);
 
