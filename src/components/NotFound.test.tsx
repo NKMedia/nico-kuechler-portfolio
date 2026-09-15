@@ -37,7 +37,7 @@ describe("NotFound", () => {
 
     const errorCode = screen.getByText("404");
     expect(errorCode).toBeInTheDocument();
-    expect(errorCode).toHaveStyle({ fontSize: "6rem", color: "#2563eb" });
+    expect(errorCode).toHaveStyle({ fontSize: "96px", color: "#2563eb" });
   });
 
   it("displays helpful error message", () => {
@@ -176,7 +176,7 @@ describe("NotFound", () => {
     const profileMain = document.querySelector(".profile-main");
     expect(profileMain).toHaveStyle({
       textAlign: "center",
-      padding: "4rem 2rem",
+      padding: "64px 32px",
     });
   });
 
@@ -189,7 +189,7 @@ describe("NotFound", () => {
     expect(helpSection).toBeInTheDocument();
     expect(helpSection).toHaveStyle({
       borderRadius: "12px",
-      padding: "1.5rem",
+      padding: "24px",
       maxWidth: "500px",
     });
   });

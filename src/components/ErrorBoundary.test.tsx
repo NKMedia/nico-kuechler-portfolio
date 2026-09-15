@@ -232,7 +232,7 @@ describe("ErrorBoundary", () => {
     expect(errorDetailsSection).toBeInTheDocument();
     expect(errorDetailsSection).toHaveStyle({
       borderRadius: "12px",
-      padding: "1.5rem",
+      padding: "24px",
       maxWidth: "600px",
     });
   });
