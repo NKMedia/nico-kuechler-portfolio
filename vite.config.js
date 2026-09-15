@@ -5,16 +5,21 @@ import { visualizer } from "rollup-plugin-visualizer";
 import { resolve } from "node:path";
 
 // https://vite.dev/config/
-export default defineConfig({
+export default defineConfig(({ mode }) => ({
   plugins: [
     react(),
-    // Bundle analyzer - generates stats.html after build
-    visualizer({
-      filename: "dist/stats.html",
-      open: true,
-      gzipSize: true,
-      brotliSize: true,
-    }),
+    // Bundle analyzer - only via `npm run build:analyze` (--mode analyze).
+    // Normal builds must not open a browser or ship stats.html to production.
+    ...(mode === "analyze"
+      ? [
+          visualizer({
+            filename: "dist/stats.html",
+            open: true,
+            gzipSize: true,
+            brotliSize: true,
+          }),
+        ]
+      : []),
   ],
   resolve: {
     alias: {
@@ -75,4 +80,4 @@ export default defineConfig({
       ],
     },
   },
-});
+}));
