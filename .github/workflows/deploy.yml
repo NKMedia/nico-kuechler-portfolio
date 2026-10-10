@@ -49,6 +49,7 @@ jobs:
           lftp --env-password -u "$FTP_USERNAME" "sftp://$FTP_SERVER" <<EOF
           set sftp:auto-confirm yes
           set net:max-retries 2
-          mirror -R --delete --verbose dist/ $FTP_SERVER_DIR
+          # events/ wird vom separaten Repo nico-kuechler-web deployt — nicht anfassen/löschen
+          mirror -R --delete --exclude-glob events/ --verbose dist/ $FTP_SERVER_DIR
           quit
           EOF
