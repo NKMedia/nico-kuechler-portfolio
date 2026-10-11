@@ -1,9 +1,10 @@
-name: Deploy to IONOS
+name: Rollback auf alte React-App (nur manuell)
 
+# Seit dem Umzug (10/2026) deployt das Repo Levoram/nico-kuechler-web die ganze
+# Domain per GitHub Actions. Dieser Workflow läuft deshalb NICHT mehr bei Push —
+# sonst würde mirror --delete die neue Seite überschreiben.
+# Manuell starten (Actions → Run workflow) = Rollback auf diese React-App.
 on:
-  push:
-    branches: [master]
-  # Allow manual deployments from the Actions tab
   workflow_dispatch:
 
 concurrency:
